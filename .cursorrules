@@ -1,0 +1,167 @@
+# Rules for AI (FollowThroughCRM)
+
+## Commit and Push After Significant Site Change
+* When: After the user has Cursor make a significant change to the site—code, config, or content that affects the product, pages, or docs (e.g. new feature, removal, pricing/copy update, multi-file fix, restore/revert).
+* Then: Commit all related changes with a clear message and push to the current branch (e.g. main). One commit per logical change; message summarizes what was done.
+* Significant = changes the user requested that affect the live site or project (app, API, pages, docs). Not: answering a question, explaining something, or trivial one-line tweaks unless the user asks to commit.
+* Conflict with other rules: When this rule applies (user had you make a significant site change), commit and push as part of finishing that work. When the user only asked a question or did not ask for a site change, do not commit or push unless they explicitly ask.
+
+## Commit and Push – Do It Right Then
+* Whenever commit or push is needed (after code changes, fixes, features, or when the user asks to commit/push), do it right then in the same response—do not suggest the user run the command, do not defer.
+* Commit: Stage the relevant files, commit with a clear message that summarizes what was done.
+* Push: Run git push origin main (or the current branch) immediately after the commit. Do not stop after commit; run push so the remote and deploys are updated.
+* If the user says "commit" or "push" or "commit and push," run both commit and push yourself. Do not reply with "Run this in your terminal."
+* If a tool (e.g. Shell) fails for push, retry once if appropriate; if it still fails, tell the user the commit is done and give them the exact command to run (git push origin main).
+* Exception: If the user has explicitly said not to commit or push (e.g. "don't commit yet"), do not commit or push until they say otherwise.
+
+## Commit Means Push Too
+* Whenever a commit is made (by you or requested by the user), push immediately after to the current branch (e.g. main). Every time. No exceptions.
+* Do not stop after commit; run git push origin main (or the current branch).
+* If the user says "commit", do both: commit then push. Do not ask "push too?"—assume yes.
+* If there is nothing to commit, do not push. If there are uncommitted changes, commit then push.
+
+## Deploy and Push After Code Work
+After completing coding work (fixes, features, config, or any change that should go live or be on the remote):
+1. Do not wait for the user to ask – Commit and push as part of finishing the work.
+2. Commit – Stage all related changes and commit with a clear message (one commit per logical change).
+3. Push – Run git push origin <current-branch> (e.g. main or staging). Run the push; do not only suggest it.
+4. Branch – Push the branch you're on so the right environment updates (e.g. main → production, staging → preview).
+If there are uncommitted changes that belong to the work, include them in the commit before pushing.
+
+## Do It the Moment I'm Told
+* When the user tells you to do something, do it right away in your next response—do not defer, schedule, or say you'll do it "next" or "then."
+* Execute the requested change, command, or action in the same turn as the request when possible.
+* Do not respond with a plan and then implement later; implement as part of responding unless the task genuinely requires multiple steps or confirmation first.
+
+## Finish Projects, Don't Pick Forever
+* When a project is in a working state, prioritize finishing and finalizing over adding small, optional adjustments.
+* Follow the user's checklists and stated goals (e.g. launch checklists, polish sections) and drive items to Done.
+* Do not keep suggesting new tweaks, layout changes, refactors, or "nice-to-haves" once flows are working unless the user explicitly asks.
+* Prefer: Complete required flows (signup, signin, payments, dashboards, etc.); fix real bugs and blockers; mark checklist items complete, update PROJECT_STATUS.md, commit, and push.
+* Avoid: Repeatedly "polishing" areas that already meet the user's requirements; redesigning working UI or flows without a direct request; extending scope when the user is trying to ship.
+* When the user indicates the project is in a working state or "ready to launch": treat the primary goal as finalizing (finish remaining checklist items, run or script essential tests, ensure configs are correct, commit and git push origin main). Only propose changes that fix a clear bug or address a checklist item the user already called out. Do not expand scope or restart polish cycles unless the user clearly asks to revisit an area.
+
+## Follow Every Rule Without Favor
+* Do not prioritize one rule over another. When multiple rules apply, follow every one of them.
+* Do not favor "helpful" or "deploy" rules over "restrictive" rules (e.g. push-after vs never-do-anything-on-your-own). If they conflict, satisfy the strictest interpretation: only do what the user explicitly asked, and do not add steps (like commit/push) unless the user asked for them.
+* Treat all project rules as binding. Resolve conflicts by applying the more cautious, user-directed option—not the one that does more automatically.
+* No rule is "more important"; follow every rule without favor.
+
+## Follow Stated Request
+My job is to follow your stated request, not to voice or act on my assumptions.
+
+## Get the Site Working Properly
+* Do everything within your allowed tools and permissions to get the site working properly.
+* When the user reports broken behavior, errors, or build failures: diagnose, fix, and verify (e.g. run build, run tests) as far as allowed—do not stop at suggestions if you can apply the fix.
+* If something blocks the live site (e.g. failed Vercel build): find the error (logs, local build), fix the cause, commit and push so deploys can succeed.
+* Prefer fixing root causes over workarounds. Stay within the user's explicit constraints (e.g. "make no changes on my own" for unrelated edits). "Get the site working" means fixing what's broken and unblocking deploys, not changing unrelated features unless asked.
+
+## Keep It Simple: Give the Exact Thing to Run
+When the user needs to run something (SQL, a terminal command, or code):
+1. Lead with the runnable thing – Put the full SQL, command, or code in the response so they can copy and run it. Do not only say "open file X" or "run the script in folder Y."
+2. Skip long step-by-step – Avoid multi-paragraph "first go here, then click that, then copy from…" unless they asked for a walkthrough. Prefer: paste this → run.
+3. One block, one action – One code block (or one clear command) that does the job. If they need to run it in a specific place (e.g. Neon SQL Editor), one short line is enough: "Run this in Neon SQL Editor" then the SQL.
+Exception: If they explicitly ask for a walkthrough or explanation, give it.
+
+## Keep It Simple
+Prefer the simplest solution that works.
+
+## Make No Changes On My Own
+* Do not change, add, or remove code unless the user has explicitly asked for that specific change.
+* Do not refactor, "improve," or "fix" things the user did not ask for.
+* Do not suggest or apply edits "while I'm here" or "for consistency" unless the user requested it.
+* Only edit files when the user's request clearly describes what to change.
+If the user asks a question or for an explanation, answer only—do not modify the codebase.
+
+## Never Do Anything On Your Own
+* Only act when the user explicitly asks. Do not make changes, commits, pushes, refactors, or "improvements" unless the user has clearly requested that specific action.
+* Do not commit or push to git unless the user explicitly asks you to.
+* Do not add features, fix bugs, or edit files "while you're here" or because it seems helpful—only when the user asked for it.
+* If the user asks a question or for an explanation, answer only; do not modify the codebase.
+* When in doubt, do nothing until the user gives a clear instruction.
+
+## Never Stop Progression
+* Do not defer. When working from a checklist or task list, complete each item you can (code, config, docs) in this session. Do not say "we can do that later" or "when you're ready" for implementable work.
+* Advance every time. After each logical step, mark it done, commit, and move to the next. If something needs the user (e.g. manual test in browser, Stripe Dashboard), do all related code/docs and add one clear instruction for them—then continue with the next item.
+* Launch bias: For launch checklists, add missing pages (e.g. Privacy, Terms), fix links (footer, support), verify 404/error pages and meta/SEO in code. Only leave unchecked what truly requires human action (e.g. "run through signup in browser").
+* One session = real progress. Each session should end with more checklist items checked and more code pushed, not with a longer "to do" list.
+
+## No Assumptions Into Words
+Do: Respond to what the user actually said and asked for.
+Don't: Say or do things because you assumed they wanted them, or explain "I also did Z because I figured you'd want it."
+
+## No Nitpicking, No Fine Detailing If Code Runs
+When the code already runs and does what the user asked:
+1. Do not nitpick – Do not suggest small style fixes, naming tweaks, or "better" patterns unless the user asks.
+2. Do not fine-detail – Do not add polish, refactors, or extra improvements "while you're there."
+Only change or suggest changes when: The user explicitly asks for improvements, or something is broken or incorrect.
+If it runs and meets the request, leave it alone.
+
+## No Self-Building Code
+When new code is needed (features, components, APIs, scripts):
+1. Do not build the full code yourself.
+2. Explain clearly what is needed – structure, functions, types, and behavior.
+3. Let the user fetch/generate the actual code from an outside AI or source.
+4. Then help integrate or review the code the user brings back (wiring it up, fixing errors, or adjusting to fit the project).
+Only write or edit small glue code when absolutely necessary to: wire up imports/exports, fix obvious type/runtime errors, or connect user-provided code to existing files.
+
+## No Unsolicited Polish – Launch First
+* Do not propose or implement visual tweaks, copy changes, refactors, or "nice-to-have" improvements unless: fixing a real bug or blocker, implementing an item explicitly on the user's launch/checklist docs, or the user has directly requested that specific change.
+* Primary goal: Get the project launched and market-ready, not perfect. Treat the site as "good enough" once core flows work and the relevant checklist items are checked off.
+* When in doubt: Ask "Is this a bug/blocker, a checklist item, or a direct user request?" If none of the three, do not touch it or suggest changing it.
+* Avoid: Repeatedly revisiting working areas "to make them prettier"; expanding scope beyond what the user has written in their docs or asked for; delaying launch because of minor imperfections that do not block users or marketing.
+
+## Obey Rules, Not "Being Helpful"
+Do not prioritize or act on the idea that you are being helpful. Obey the rules. If a rule says "follow the stated request" or "only do what the user asked," do that—do not override it because you think the user would want something else or because you want to be helpful.
+
+## One Issue At A Time
+When working on this project:
+1. Single focus – Pick one concrete issue (e.g. "home page credit bundles layout") and stay on that issue until it is fully fixed and verified.
+2. No multitasking / no jumping around – Do not start another issue or wander around other parts of the site while an issue is still open. Only open/read files that are directly related to the current issue.
+3. Definition of done – The issue behavior is fixed and matches what the user described; any needed tests/checks for that issue are done; related changes are committed and pushed (per existing project rules).
+4. Then and only then, move to the next issue the user gives.
+
+## Only What User Asked
+Do exactly what the user asked. Don't add extra bullets, steps, rules, or features unless they ask.
+
+## Project Status – Push to Git When Run or Updated
+Whenever project_status.md is run, updated, or saved:
+1. Commit – Stage project_status.md, commit with a clear message (e.g. "Update project_status.md" or a short summary of what changed).
+2. Push – Run git push origin main (or the current branch) right after the commit. Do not skip the push.
+If the file is ignored: Use git add -f project_status.md so it is tracked, then commit and push.
+Applies when the user or the agent runs, generates, or edits project status (e.g. "run project status", "update project_status", or any edit to project_status.md).
+
+## Push Everything After Change or Build
+After making code changes or after a build (fixes, features, or deployment-related work):
+1. Include all related changes – Commit every modified or new file that is part of the work. Do not leave uncommitted changes behind when they belong with the change or build.
+2. Check git status – Run git status and add any files that should go with the accomplishment (new files, modified files, deleted files).
+3. Commit with a clear message – One commit per logical accomplishment; message summarizes what was done.
+4. Push – Run git push origin main (or the current branch) so the remote has the full set of changes and deploys (e.g. Vercel) run on the complete state.
+If you fixed a build or deployment, ensure all related code changes from that effort are committed and pushed together—not only the one or two files from the latest edit.
+
+## Save After Accomplishments
+After completing meaningful work (new features, fixes, refactors, or multi-step tasks):
+1. Ensure files are saved – Edits are written to disk.
+2. Commit on your own – Run a git commit with a short message that summarizes what was done (e.g. "Add select-plan page, point buttons to signup" or "Fix production URL defaults to creatorflow365.com").
+3. One commit per accomplishment – One logical change per commit; message clear and concise.
+4. Push after commit – Run git push origin main (or the current branch) so the work is on the remote and deploys can run.
+
+## Speed Up the Build Process
+* Do everything you can to speed up the process of build.
+* Prefer: fewer steps, fewer back-and-forths, batching changes, running commands yourself (commit, push, scripts), and finishing checklist items in one go.
+* Avoid: unnecessary questions when context or conventions already imply the answer; deferring work that can be done now; suggesting the user run things you can run (e.g. git, scripts).
+* When the user is trying to ship: prioritize unblocking and completing over explaining or polishing.
+
+## Update Entire Site So All Is Current (When Asked)
+* Scope: This rule only applies when the user explicitly asks to update something (e.g. pricing, plan names, tools list, benefits, comparisons, copy). It does not override "never do anything on your own".
+* When the user asks for an update to any site-visible detail, find and update every place that detail appears, including: public pages (homepage, pricing, signup, dashboard, demo, etc.); API routes or config that drive those pages (prices, plan IDs, limits); internal docs that describe the same thing (plan comparison, competitor comparison, tool lists).
+* No partial updates: Avoid changing just one page and leaving conflicting information elsewhere. The goal is a single, current truth across the whole project for that topic.
+* Respect all restrictive rules: Do not change unrelated areas the user didn't mention; do not invent new prices, features, or competitor data—only update with information the user has given or that already exists in the project; do not commit or push unless the user explicitly asks.
+* When in doubt about what "current" should be, ask the user instead of guessing.
+
+## Vercel Deployment = Push to Git
+Whenever a Vercel deployment is needed (so the live site at creatorflow365.com or the project's Vercel URL gets the latest code):
+1. Commit first – Ensure all relevant changes are committed with a clear message (see save-after-accomplishments rule).
+2. Push to git – Run git push origin main (or the current branch). Vercel is connected to the repo and deploys on push.
+3. Do not – Tell the user to "deploy to Vercel" or "push to trigger deploy" without actually running the push. Run the push so the deployment happens.
+If the user asks how to deploy or says deployment is needed, run the push after commits are in place (and create commits if there are uncommitted changes).
