@@ -33,7 +33,7 @@ export async function GET(req: Request) {
   }
 
   // Get user emails
-  const userIds = Array.from(new Set(rows.map((r) => r.user_id))];
+  const userIds = Array.from(new Set(rows.map((r) => r.user_id)));
   const users = await sql`
     SELECT id, email FROM users WHERE id = ANY(${userIds})
   `;
@@ -48,7 +48,7 @@ export async function GET(req: Request) {
   }
 
   let sent = 0;
-  for (const [userId, promises] of byUser) {
+  for (const [userId, promises] of Array.from(byUser.entries())) {
     const to = userEmailById[userId];
     if (!to) continue;
     if (!resend) continue; // No API key = no cost, no send
