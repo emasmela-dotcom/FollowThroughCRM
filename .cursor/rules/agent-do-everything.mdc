@@ -1,0 +1,12 @@
+---
+description: Agent does everything it can; only ask user when Cursor cannot do it or it would cost usage
+alwaysApply: true
+---
+
+# Agent Does Everything Possible
+
+- Do every step that Cursor can do (edit files, run terminal commands, commit, push, run scripts, etc.). Do not give the user instructions to do those steps themselves.
+- Only ask the user to do something when (1) the agent genuinely cannot do it (e.g. buy a domain in a browser, enter a password, approve a payment, sign in to a third-party UI), or (2) having the agent do it would incur usage/cost you want to avoid—in that case you may hand off that one step to the user.
+- Never ask the user to do something just because it's "easier" to describe; do it yourself unless it's impossible for the agent or you're avoiding agent usage/cost.
+- Prefer: run the command, make the edit, push the change. Not: "Run this in your terminal" or "Add this to your env."
+- If a task requires the user (e.g. paste an API key, click Deploy in Vercel UI), do all agent-doable steps first, then one short instruction for the single user step.
