@@ -3,6 +3,26 @@
 import Link from "next/link";
 import type { PromiseRow } from "./page";
 
+function getInitials(name: string | null): string {
+  if (!name || !name.trim()) return "?";
+  const parts = name.trim().split(/\s+/);
+  if (parts.length >= 2) return (parts[0][0]! + parts[parts.length - 1]![0]).toUpperCase();
+  return name.slice(0, 2).toUpperCase();
+}
+
+function StatusPill({ status }: { status: string }) {
+  const isAgreed = status === "agreed";
+  return (
+    <span
+      className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${
+        isAgreed ? "bg-blue-100 text-blue-800" : "bg-amber-100 text-amber-800"
+      }`}
+    >
+      {isAgreed ? "Agreed" : "Pending"}
+    </span>
+  );
+}
+
 function Card({
   title,
   items,
@@ -40,17 +60,24 @@ function Card({
             <li key={p.id}>
               <Link
                 href={`/dashboard/promises/${p.id}`}
-                className="block rounded-lg border border-slate-100 p-3 text-sm hover:bg-slate-50"
+                className="flex items-center gap-2 rounded-lg border border-slate-100 p-3 text-sm hover:bg-slate-50"
               >
-                <span className="font-medium text-slate-900">{p.title}</span>
-                {p.person_name && (
-                  <span className="ml-2 text-slate-500">— {p.person_name}</span>
-                )}
-                {p.due_at && (
-                  <span className="ml-2 text-slate-400">
-                    due {String(p.due_at).slice(0, 10)}
-                  </span>
-                )}
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-slate-200 text-xs font-medium text-slate-700">
+                  {getInitials(p.person_name)}
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="font-medium text-slate-900">{p.title}</span>
+                  {p.person_name && (
+                    <span className="ml-2 text-slate-500">— {p.person_name}</span>
+                  )}
+                  {p.due_at && (
+                    <span className="ml-2 text-slate-400">
+                      due {String(p.due_at).slice(0, 10)}
+                    </span>
+                  )}
+                </span>
+                <StatusPill status={p.status} />
+                <span className="shrink-0 text-slate-500 font-medium">View →</span>
               </Link>
             </li>
           ))}
