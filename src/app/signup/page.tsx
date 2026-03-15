@@ -37,6 +37,9 @@ export default function SignupPage() {
   return (
     <div className="min-h-screen flex items-center justify-center app-bg p-4">
       <div className="w-full max-w-sm rounded-xl bg-white shadow-sm border border-slate-200 p-6">
+        <p className="mb-4">
+          <Link href="/" className="text-sm text-slate-500 hover:text-slate-700">← Home</Link>
+        </p>
         <h1 className="text-xl font-semibold text-slate-900 mb-1">Follow-Through CRM</h1>
         <p className="text-slate-500 text-sm mb-6">Create your account</p>
         <form onSubmit={handleSubmit} className="space-y-4">

@@ -174,6 +174,9 @@ export default function PublicAgreementPage() {
 
   return (
     <div className="min-h-screen app-bg py-8 px-4">
+      <p className="max-w-lg mx-auto mb-4 px-1">
+        <Link href="/" className="text-sm text-slate-500 hover:text-slate-700">← Home</Link>
+      </p>
       <div className="max-w-lg mx-auto bg-white rounded-xl border border-slate-200/80 shadow-md overflow-hidden">
         <div className="p-6 border-b border-slate-200">
           <p className="text-sm text-slate-500 mb-1">

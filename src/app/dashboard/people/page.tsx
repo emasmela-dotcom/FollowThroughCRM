@@ -8,7 +8,7 @@ export default async function PeoplePage() {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) return null;
   const people = await sql`
-    SELECT id, name, email, notes, created_at FROM people
+    SELECT id, name, email, phone, address, notes, created_at FROM people
     WHERE user_id = ${session.user.id}
     ORDER BY name
   `;
@@ -23,7 +23,7 @@ export default async function PeoplePage() {
           Add person
         </Link>
       </div>
-      <PeopleList people={people as { id: string; name: string; email: string | null; notes: string | null; created_at: string }[]} />
+      <PeopleList people={people as { id: string; name: string; email: string | null; phone: string | null; address: string | null; notes: string | null; created_at: string }[]} />
     </div>
   );
 }

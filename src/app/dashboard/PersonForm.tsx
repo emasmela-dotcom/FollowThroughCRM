@@ -7,12 +7,16 @@ type Props = {
   id?: string;
   defaultName?: string;
   defaultEmail?: string;
+  defaultPhone?: string;
+  defaultAddress?: string;
   defaultNotes?: string;
 };
 
-export function PersonForm({ id, defaultName = "", defaultEmail = "", defaultNotes = "" }: Props) {
+export function PersonForm({ id, defaultName = "", defaultEmail = "", defaultPhone = "", defaultAddress = "", defaultNotes = "" }: Props) {
   const [name, setName] = useState(defaultName);
   const [email, setEmail] = useState(defaultEmail);
+  const [phone, setPhone] = useState(defaultPhone);
+  const [address, setAddress] = useState(defaultAddress);
   const [notes, setNotes] = useState(defaultNotes);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -27,7 +31,7 @@ export function PersonForm({ id, defaultName = "", defaultEmail = "", defaultNot
     const res = await fetch(url, {
       method,
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: name.trim(), email: email.trim() || null, notes: notes.trim() || null }),
+      body: JSON.stringify({ name: name.trim(), email: email.trim() || null, phone: phone.trim() || null, address: address.trim() || null, notes: notes.trim() || null }),
     });
     const data = await res.json();
     setLoading(false);
@@ -62,7 +66,29 @@ export function PersonForm({ id, defaultName = "", defaultEmail = "", defaultNot
         />
       </div>
       <div>
-        <label htmlFor="notes" className="block text-sm font-medium text-slate-700 mb-1">Notes</label>
+        <label htmlFor="phone" className="block text-sm font-medium text-slate-700 mb-1">Phone</label>
+        <input
+          id="phone"
+          type="tel"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+          placeholder="e.g. +1 555 123 4567"
+          className="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900"
+        />
+      </div>
+      <div>
+        <label htmlFor="address" className="block text-sm font-medium text-slate-700 mb-1">Address</label>
+        <input
+          id="address"
+          type="text"
+          value={address}
+          onChange={(e) => setAddress(e.target.value)}
+          placeholder="Street, city, state, zip"
+          className="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900"
+        />
+      </div>
+      <div>
+        <label htmlFor="notes" className="block text-sm font-medium text-slate-700 mb-1">Notes / other info</label>
         <textarea
           id="notes"
           value={notes}

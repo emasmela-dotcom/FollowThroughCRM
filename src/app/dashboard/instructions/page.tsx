@@ -34,19 +34,6 @@ export default function InstructionsPage() {
         The public agreement page shows a live countdown until the due date. After completion, it shows the completion date.
       </p>
 
-      <h2 className="text-lg font-medium text-slate-900 mt-6">Setup: Neon database</h2>
-      <p className="text-slate-700 text-sm">
-        This app uses Neon (free tier) for the database. To set up Neon: create a project at Neon, get your connection string, and add it to the app as <code className="bg-slate-100 px-1 rounded">DATABASE_URL</code>. Full steps:
-      </p>
-      <a
-        href="https://neon.tech/docs/get-started-with-neon"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-block text-sm text-slate-800 font-medium underline underline-offset-1 hover:text-slate-600 mt-2"
-      >
-        How to set up Neon (official guide) →
-      </a>
-
       <Link href="/dashboard" className="inline-block text-sm text-slate-600 hover:text-slate-900 underline mt-6">
         ← Back to Waiting On
       </Link>

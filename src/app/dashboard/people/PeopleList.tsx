@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-type Person = { id: string; name: string; email: string | null; notes: string | null; created_at: string };
+type Person = { id: string; name: string; email: string | null; phone: string | null; address: string | null; notes: string | null; created_at: string };
 
 export function PeopleList({ people }: { people: Person[] }) {
   if (people.length === 0) {
@@ -22,6 +22,11 @@ export function PeopleList({ people }: { people: Person[] }) {
           >
             <span className="font-medium text-slate-900">{p.name}</span>
             {p.email && <span className="ml-2 text-slate-500 text-sm">{p.email}</span>}
+            {(p.phone || p.address) && (
+              <p className="mt-1 text-sm text-slate-500">
+                {[p.phone, p.address].filter(Boolean).join(" · ")}
+              </p>
+            )}
             {p.notes && <p className="mt-1 text-sm text-slate-500">{p.notes}</p>}
           </Link>
         </li>

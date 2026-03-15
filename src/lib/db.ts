@@ -60,4 +60,11 @@ export async function initDb() {
       END IF;
     END $$
   `;
+  // Add people contact columns if missing
+  await sql`
+    ALTER TABLE people ADD COLUMN IF NOT EXISTS phone TEXT;
+  `;
+  await sql`
+    ALTER TABLE people ADD COLUMN IF NOT EXISTS address TEXT;
+  `;
 }

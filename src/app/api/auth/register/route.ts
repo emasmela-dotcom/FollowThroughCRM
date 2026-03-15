@@ -17,9 +17,15 @@ export async function POST(req: Request) {
     `;
     return NextResponse.json({ ok: true });
   } catch (e: unknown) {
-    const msg = e && typeof e === "object" && "code" in e && (e as { code: string }).code === "23505"
-      ? "Email already registered"
-      : "Registration failed";
+    const isDuplicate = e && typeof e === "object" && "code" in e && (e as { code: string }).code === "23505";
+    const errMsg =
+      e && typeof e === "object" && "message" in e && typeof (e as { message: string }).message === "string"
+        ? (e as { message: string }).message
+        : e instanceof Error
+          ? e.message
+          : String(e);
+    const msg = isDuplicate ? "Email already registered" : (process.env.NODE_ENV === "development" ? errMsg : "Registration failed");
+    if (!isDuplicate && e) console.error("Register error:", e);
     return NextResponse.json({ error: msg }, { status: 400 });
   }
 }

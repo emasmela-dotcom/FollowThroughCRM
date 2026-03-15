@@ -9,6 +9,42 @@ A **Promise Tracking CRM**: track what you’re waiting on and who you’re wait
 
 ---
 
+## What Follow Through is (for marketing / CreatorFlow365)
+
+**One sentence:**  
+Follow Through is a promise-tracking CRM that answers: *What am I waiting on, who owes it, and when is it due?*
+
+**Short description:**  
+Follow Through is not a sales pipeline. It’s a **“waiting on”** list: you add **promises** (things someone said they’d do, or things you said you’d do), attach them to **people**, set **due dates**, and see everything in one place—**They owe you**, **You owe them**, **Overdue**, and **Upcoming**. Built for creators, freelancers, and small teams who need to stay on top of follow-ups without a heavy CRM.
+
+**Features:**
+
+| Feature | What it does |
+|--------|----------------|
+| **Waiting On dashboard** | Single view: **They owe you** (others’ commitments to you), **You owe them** (your commitments), **Overdue** (past due), **Upcoming** (due soon). |
+| **People** | Contacts (name, email, notes). Link people to promises so you see who each request is with. |
+| **Promises** | Each item has a **title**, **direction** (they owe you / you owe them), **due date**, **notes**, and **status**: open, done, or cancelled. |
+| **Reminders** | Optional daily email listing due and overdue items. Can be turned off for zero cost. |
+
+**Tagline options:**  
+- “Track what you’re waiting on—and who you’re waiting on it from.”  
+- “The CRM that tracks promises, not pipelines.”
+
+---
+
+## Assemble in Git (no usage)
+
+Get the app into git and running with **no usage and no cost** (no Resend, no reminder emails):
+
+1. **Git** — Clone or create a repo; use this folder as the repo root. Push to GitHub.
+2. **Env (required only)** — Set `DATABASE_URL` (Neon), `NEXTAUTH_SECRET`, `NEXTAUTH_URL`. Do **not** set `RESEND_API_KEY`; reminders will be skipped and you pay nothing.
+3. **One-time DB** — `npm install && npm run db:push`
+4. **Run** — `npm run dev` locally, or deploy to Vercel (same env vars; leave `RESEND_API_KEY` unset).
+
+Cron still runs on Vercel but sends no emails when `RESEND_API_KEY` is unset.
+
+---
+
 ## No-cost setup (what you pay: $0)
 
 Everything below stays **free** within normal solo/small use. No credit card required.

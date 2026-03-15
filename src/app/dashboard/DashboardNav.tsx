@@ -12,6 +12,12 @@ export function DashboardNav({ userEmail }: { userEmail: string }) {
         href="/dashboard"
         className={`text-sm font-medium ${path === "/dashboard" ? "text-slate-900" : "text-slate-500 hover:text-slate-700"}`}
       >
+        Home
+      </Link>
+      <Link
+        href="/dashboard"
+        className={`text-sm font-medium ${path === "/dashboard" ? "text-slate-900" : "text-slate-500 hover:text-slate-700"}`}
+      >
         Waiting On
       </Link>
       <Link
