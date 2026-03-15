@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "db:push": "tsx scripts/db-push.ts"
+    "db:push": "DOTENV_CONFIG_PATH=.env.local node -r dotenv/config node_modules/.bin/tsx scripts/db-push.ts"
   },
   "dependencies": {
     "@neondatabase/serverless": "^0.10.0",

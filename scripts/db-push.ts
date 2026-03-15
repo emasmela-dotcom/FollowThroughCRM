@@ -1,9 +1,8 @@
-import { config } from "dotenv";
-import { initDb } from "../src/lib/db";
+// Load env before db (db reads DATABASE_URL at import time)
+require("dotenv").config({ path: ".env.local" });
+require("dotenv").config({ path: ".env" });
 
-// Load .env.local (Next.js) or .env
-config({ path: ".env.local" });
-config({ path: ".env" });
+import { initDb } from "../src/lib/db";
 
 async function main() {
   await initDb();

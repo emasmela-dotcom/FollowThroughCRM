@@ -1,6 +1,12 @@
 import { neon } from "@neondatabase/serverless";
 
-const sql = neon(process.env.DATABASE_URL!);
+const connectionString = process.env.DATABASE_URL;
+if (!connectionString) {
+  throw new Error(
+    "DATABASE_URL is not set. Create .env.local (or add in Vercel: Settings → Environment Variables) with DATABASE_URL=your-neon-connection-string."
+  );
+}
+const sql = neon(connectionString);
 
 export { sql };
 
@@ -31,7 +37,7 @@ export async function initDb() {
       person_id UUID REFERENCES people(id) ON DELETE SET NULL,
       title TEXT NOT NULL,
       direction TEXT NOT NULL CHECK (direction IN ('i_owe', 'they_owe')),
-      status TEXT NOT NULL DEFAULT 'open' CHECK (status IN ('open', 'done', 'cancelled')),
+      status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'agreed', 'done', 'cancelled')),
       due_at DATE,
       notes TEXT,
       created_at TIMESTAMPTZ DEFAULT NOW(),
@@ -45,5 +51,13 @@ export async function initDb() {
       sent_at TIMESTAMPTZ DEFAULT NOW(),
       UNIQUE(promise_id)
     )
+  `;
+  // Add notes column if table existed from an older schema
+  await sql`
+    DO $$ BEGIN
+      IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'promises' AND column_name = 'notes') THEN
+        ALTER TABLE promises ADD COLUMN notes TEXT;
+      END IF;
+    END $$
   `;
 }

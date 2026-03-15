@@ -22,7 +22,7 @@ export async function GET(req: Request) {
     SELECT p.id AS promise_id, p.user_id, p.title, p.direction, p.due_at, per.name AS person_name
     FROM promises p
     LEFT JOIN people per ON per.id = p.person_id
-    WHERE p.status = 'open'
+    WHERE p.status = 'pending'
       AND p.due_at IS NOT NULL
       AND p.due_at::text <= ${today}
       AND NOT EXISTS (SELECT 1 FROM reminder_sent r WHERE r.promise_id = p.id)

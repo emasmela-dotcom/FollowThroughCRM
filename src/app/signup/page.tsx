@@ -35,7 +35,7 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-100 p-4">
+    <div className="min-h-screen flex items-center justify-center app-bg p-4">
       <div className="w-full max-w-sm rounded-xl bg-white shadow-sm border border-slate-200 p-6">
         <h1 className="text-xl font-semibold text-slate-900 mb-1">Follow-Through CRM</h1>
         <p className="text-slate-500 text-sm mb-6">Create your account</p>

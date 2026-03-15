@@ -1,5 +1,9 @@
 # Rules for AI (FollowThroughCRM)
 
+## CreatorFlow365 Reads
+* This project uses the same rule set as CreatorFlow365 (read and follow the rules above and below).
+* Do nothing beyond what the user asked. We will catch up later.
+
 ## Commit and Push After Significant Site Change
 * When: After the user has Cursor make a significant change to the site—code, config, or content that affects the product, pages, or docs (e.g. new feature, removal, pricing/copy update, multi-file fix, restore/revert).
 * Then: Commit all related changes with a clear message and push to the current branch (e.g. main). One commit per logical change; message summarizes what was done.

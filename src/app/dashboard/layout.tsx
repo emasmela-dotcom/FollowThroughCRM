@@ -13,12 +13,15 @@ export default async function DashboardLayout({
   if (!session) redirect("/login");
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <header className="border-b border-slate-200 bg-white">
+    <div className="min-h-screen app-bg">
+      <header className="border-b border-slate-200/80 bg-white shadow-sm">
         <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-4">
-          <Link href="/dashboard" className="font-semibold text-slate-900">
-            Follow-Through CRM
-          </Link>
+          <div>
+            <Link href="/dashboard" className="font-semibold text-slate-900">
+              Follow-Through CRM
+            </Link>
+            <p className="text-xs text-slate-500">Turn conversations into confirmed agreements.</p>
+          </div>
           <DashboardNav userEmail={session.user?.email ?? ""} />
         </div>
       </header>

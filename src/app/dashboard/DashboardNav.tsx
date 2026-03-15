@@ -20,6 +20,12 @@ export function DashboardNav({ userEmail }: { userEmail: string }) {
       >
         People
       </Link>
+      <Link
+        href="/dashboard/instructions"
+        className={`text-sm font-medium ${path === "/dashboard/instructions" ? "text-slate-900" : "text-slate-500 hover:text-slate-700"}`}
+      >
+        Instructions
+      </Link>
       <span className="text-sm text-slate-400">{userEmail}</span>
       <button
         onClick={() => signOut({ callbackUrl: "/login" })}

@@ -15,14 +15,21 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
-  const session = await getServerSession(authOptions);
-  if (!session?.user?.id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  const { name, email, notes } = await req.json();
-  if (!name?.trim()) return NextResponse.json({ error: "Name required" }, { status: 400 });
-  const [row] = await sql`
-    INSERT INTO people (user_id, name, email, notes)
-    VALUES (${session.user.id}, ${(name as string).trim()}, ${email?.trim() ?? null}, ${notes?.trim() ?? null})
-    RETURNING id, name, email, notes, created_at
-  `;
-  return NextResponse.json(row);
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session?.user?.id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const { name, email, notes } = await req.json();
+    if (!name?.trim()) return NextResponse.json({ error: "Name required" }, { status: 400 });
+    const rows = await sql`
+      INSERT INTO people (user_id, name, email, notes)
+      VALUES (${session.user.id}, ${(name as string).trim()}, ${email?.trim() ?? null}, ${notes?.trim() ?? null})
+      RETURNING id, name, email, notes, created_at
+    `;
+    const row = rows[0];
+    return NextResponse.json(row);
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    console.error("POST /api/people error:", message);
+    return NextResponse.json({ error: message }, { status: 500 });
+  }
 }

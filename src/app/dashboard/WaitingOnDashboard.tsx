@@ -8,14 +8,22 @@ function Card({
   items,
   emptyMessage,
   badge,
+  accent = "slate",
 }: {
   title: string;
   items: PromiseRow[];
   emptyMessage: string;
   badge?: string;
+  accent?: "blue" | "slate" | "amber" | "green";
 }) {
+  const accentBorder = {
+    blue: "border-t-blue-400",
+    slate: "border-t-slate-400",
+    amber: "border-t-amber-400",
+    green: "border-t-green-500",
+  }[accent];
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+    <div className={`rounded-xl border border-slate-200 border-t-4 ${accentBorder} bg-white p-4 shadow-sm`}>
       <h2 className="mb-3 flex items-center gap-2 text-lg font-semibold text-slate-900">
         {title}
         {badge && (

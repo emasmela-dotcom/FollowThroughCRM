@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Soft cool blue-grey background with subtle grid for structure and trust */
+.app-bg {
+  background-color: #e5eef5;
+  background-image:
+    linear-gradient(rgba(148, 163, 184, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 163, 184, 0.06) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
 body {
-  @apply bg-slate-50 text-slate-900 antialiased;
+  @apply text-slate-900 antialiased;
+}
+body.app-bg {
+  min-height: 100vh;
 }

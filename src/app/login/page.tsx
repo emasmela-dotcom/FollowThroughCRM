@@ -29,7 +29,7 @@ function LoginForm() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-100 p-4">
+    <div className="min-h-screen flex items-center justify-center app-bg p-4">
       <div className="w-full max-w-sm rounded-xl bg-white shadow-sm border border-slate-200 p-6">
         <h1 className="text-xl font-semibold text-slate-900 mb-1">Follow-Through CRM</h1>
         <p className="text-slate-500 text-sm mb-6">Sign in to your account</p>
@@ -75,7 +75,7 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-slate-100"><div className="text-slate-500">Loading…</div></div>}>
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center app-bg"><div className="text-slate-500">Loading…</div></div>}>
       <LoginForm />
     </Suspense>
   );
