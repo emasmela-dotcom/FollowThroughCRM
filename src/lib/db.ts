@@ -67,4 +67,31 @@ export async function initDb() {
   await sql`
     ALTER TABLE people ADD COLUMN IF NOT EXISTS address TEXT;
   `;
+  await sql`
+    ALTER TABLE people ADD COLUMN IF NOT EXISTS company TEXT;
+  `;
+  await sql`
+    ALTER TABLE people ADD COLUMN IF NOT EXISTS job_title TEXT;
+  `;
+  await sql`
+    ALTER TABLE people ADD COLUMN IF NOT EXISTS preferred_contact TEXT;
+  `;
+  await sql`
+    ALTER TABLE people ADD COLUMN IF NOT EXISTS website TEXT;
+  `;
+  await sql`
+    ALTER TABLE people ADD COLUMN IF NOT EXISTS category TEXT;
+  `;
+  // Agreement documents (contract PDFs stored in DB to stay $0)
+  await sql`
+    CREATE TABLE IF NOT EXISTS agreement_documents (
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      promise_id UUID NOT NULL REFERENCES promises(id) ON DELETE CASCADE,
+      file_name TEXT NOT NULL,
+      content_type TEXT NOT NULL,
+      file_size INTEGER NOT NULL,
+      file_data TEXT NOT NULL,
+      created_at TIMESTAMPTZ DEFAULT NOW()
+    )
+  `;
 }

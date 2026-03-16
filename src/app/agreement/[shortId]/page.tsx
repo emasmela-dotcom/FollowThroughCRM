@@ -270,10 +270,15 @@ export default function PublicAgreementPage() {
         )}
 
         <footer className="p-4 bg-slate-50 border-t border-slate-200 text-center text-sm text-slate-500">
-          <p>Created with FollowThru CRM — turn conversations into confirmed agreements.</p>
+          <p>Created with Follow Thru CRM — turn conversations into confirmed agreements.</p>
           <Link href="/login" className="text-slate-700 underline mt-1 inline-block">Create your own agreement</Link>
         </footer>
       </div>
+      <footer className="mt-8 text-center text-xs text-slate-500">
+        © {new Date().getFullYear()} Follow Thru CRM · Turn conversations into confirmed agreements.
+        {" · "}
+        <Link href="/" className="text-slate-600 hover:text-slate-800 underline underline-offset-1">How it works</Link>
+      </footer>
     </div>
   );
 }

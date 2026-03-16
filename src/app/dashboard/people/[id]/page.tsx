@@ -14,7 +14,7 @@ export default async function PersonEditPage({
   if (!session?.user?.id) return null;
   const { id } = await params;
   const [row] = await sql`
-    SELECT id, name, email, phone, address, notes FROM people WHERE id = ${id} AND user_id = ${session.user.id}
+    SELECT id, name, email, phone, address, company, job_title, preferred_contact, website, category, notes FROM people WHERE id = ${id} AND user_id = ${session.user.id}
   `;
   if (!row) notFound();
   return (
@@ -31,6 +31,11 @@ export default async function PersonEditPage({
         defaultEmail={(row.email as string) ?? ""}
         defaultPhone={(row.phone as string) ?? ""}
         defaultAddress={(row.address as string) ?? ""}
+        defaultCompany={(row.company as string) ?? ""}
+        defaultJobTitle={(row.job_title as string) ?? ""}
+        defaultPreferredContact={(row.preferred_contact as string) ?? ""}
+        defaultWebsite={(row.website as string) ?? ""}
+        defaultCategory={(row.category as string) ?? ""}
         defaultNotes={(row.notes as string) ?? ""}
       />
     </div>

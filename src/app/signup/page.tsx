@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { AppFooter } from "@/components/AppFooter";
 
 export default function SignupPage() {
   const [email, setEmail] = useState("");
@@ -35,8 +36,9 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center app-bg p-4">
-      <div className="w-full max-w-sm rounded-xl bg-white shadow-sm border border-slate-200 p-6">
+    <div className="min-h-screen flex flex-col app-bg p-4">
+      <div className="flex-1 flex items-center justify-center">
+        <div className="w-full max-w-sm rounded-xl bg-white shadow-sm border border-slate-200 p-6">
         <p className="mb-4">
           <Link href="/" className="text-sm text-slate-500 hover:text-slate-700">← Home</Link>
         </p>
@@ -78,7 +80,9 @@ export default function SignupPage() {
         <p className="mt-4 text-center text-sm text-slate-500">
           Already have an account? <Link href="/login" className="text-slate-700 font-medium hover:underline">Sign in</Link>
         </p>
+        </div>
       </div>
+      <AppFooter howItWorksHref="/" />
     </div>
   );
 }

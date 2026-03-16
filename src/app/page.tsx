@@ -19,6 +19,12 @@ export default async function Home() {
           </p>
         </header>
 
+        <div className="rounded-xl border border-slate-200/80 bg-white p-6 shadow-sm mb-10 text-center">
+          <p className="text-slate-700 text-sm max-w-2xl mx-auto">
+            <strong className="text-slate-900">One place for every agreement.</strong> Your structured record—task, due date, compensation, status—lives here. When you share the link, attach your contract (PDF or Word) in the same email so the other party has the document and the link in one place. You get a clear audit trail and a single source of truth, at no extra cost.
+          </p>
+        </div>
+
         <div className="grid sm:grid-cols-3 gap-6 mb-12">
           <div className="rounded-xl border border-slate-200/80 bg-white p-6 shadow-sm text-center">
             <div className="text-2xl font-semibold text-slate-800 mb-1">Create</div>
@@ -26,11 +32,11 @@ export default async function Home() {
           </div>
           <div className="rounded-xl border border-slate-200/80 bg-white p-6 shadow-sm text-center">
             <div className="text-2xl font-semibold text-slate-800 mb-1">Share</div>
-            <p className="text-sm text-slate-600">Send the link. The other party agrees or requests changes—no back-and-forth.</p>
+            <p className="text-sm text-slate-600">Send the link—and attach your contract in the same email. The other party agrees or requests changes in one place.</p>
           </div>
           <div className="rounded-xl border border-slate-200/80 bg-white p-6 shadow-sm text-center">
             <div className="text-2xl font-semibold text-slate-800 mb-1">Complete</div>
-            <p className="text-sm text-slate-600">Track due dates, mark done, and keep everyone on the same page.</p>
+            <p className="text-sm text-slate-600">Track due dates, mark done, and keep everyone on the same page. Professional agreement handling without the complexity.</p>
           </div>
         </div>
 

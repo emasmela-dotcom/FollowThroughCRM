@@ -4,6 +4,7 @@ import { signIn } from "next-auth/react";
 import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { AppFooter } from "@/components/AppFooter";
 
 function LoginForm() {
   const [email, setEmail] = useState("");
@@ -29,8 +30,9 @@ function LoginForm() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center app-bg p-4">
-      <div className="w-full max-w-sm rounded-xl bg-white shadow-sm border border-slate-200 p-6">
+    <div className="min-h-screen flex flex-col app-bg p-4">
+      <div className="flex-1 flex items-center justify-center">
+        <div className="w-full max-w-sm rounded-xl bg-white shadow-sm border border-slate-200 p-6">
         <p className="mb-4">
           <Link href="/" className="text-sm text-slate-500 hover:text-slate-700">← Home</Link>
         </p>
@@ -71,7 +73,9 @@ function LoginForm() {
         <p className="mt-4 text-center text-sm text-slate-500">
           No account? <Link href="/signup" className="text-slate-700 font-medium hover:underline">Sign up</Link>
         </p>
+        </div>
       </div>
+      <AppFooter howItWorksHref="/" />
     </div>
   );
 }
