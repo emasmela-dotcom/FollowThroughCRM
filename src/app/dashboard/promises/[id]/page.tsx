@@ -9,6 +9,7 @@ import { AgreementActions } from "./AgreementActions";
 import { ShareWin } from "./ShareWin";
 import { AgreementCountdown } from "@/components/agreements/AgreementCountdown";
 import { StatusBadge } from "@/components/agreements/StatusBadge";
+import PaymentOptionsSectionWrapper from "./PaymentOptionsSectionWrapper";
 
 export default async function PromiseDetailPage({
   params,
@@ -17,12 +18,16 @@ export default async function PromiseDetailPage({
 }) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) return null;
-  const { id } = await params;
+  const { id: rawId } = await params;
+  const id = rawId.split("?")[0];
   const [p] = await sql`
     SELECT p.id, p.title, p.direction, p.status, p.due_at, p.notes, p.person_id, p.created_at,
-           p.short_id, p.compensation, p.agreed_at, p.completed_at
+           p.short_id, p.compensation, p.agreed_at, p.completed_at,
+           p.stripe_link, p.paypal_link, p.cash_app_tag, p.venmo_user, p.zelle_contact, p.bank_notes,
+           per.name AS person_name, per.email AS person_email
     FROM promises p
-    WHERE p.id = ${id} AND p.user_id = ${session.user.id}
+    LEFT JOIN people per ON per.id = p.person_id AND per.user_id = ${session.user.id}
+    WHERE p.id::text = ${id} AND p.user_id = ${session.user.id}
   `;
   if (!p) notFound();
   const people = await sql`
@@ -39,7 +44,13 @@ export default async function PromiseDetailPage({
         <div className="flex items-center gap-2 flex-wrap justify-end">
           <StatusBadge status={status} />
           {status === "pending" && <MarkDoneButton promiseId={id} />}
-          <AgreementActions promiseId={id} shortId={shortId} status={status} />
+          <AgreementActions
+            promiseId={id}
+            shortId={shortId}
+            status={status}
+            personName={(p as { person_name?: string | null }).person_name ?? null}
+            personEmail={(p as { person_email?: string | null }).person_email ?? null}
+          />
         </div>
       </div>
       <h1 className="text-2xl font-semibold text-slate-900">
@@ -68,6 +79,17 @@ export default async function PromiseDetailPage({
         defaultDueAt={p.due_at as string | null}
         defaultNotes={p.notes as string | null}
         defaultCompensation={p.compensation as string | null}
+      />
+      <PaymentOptionsSectionWrapper
+        promiseId={p.id as string}
+        initial={{
+          stripeLink: (p.stripe_link as string | null) ?? null,
+          paypalLink: (p.paypal_link as string | null) ?? null,
+          cashAppTag: (p.cash_app_tag as string | null) ?? null,
+          venmoUser: (p.venmo_user as string | null) ?? null,
+          zelleContact: (p.zelle_contact as string | null) ?? null,
+          bankNotes: (p.bank_notes as string | null) ?? null,
+        }}
       />
     </div>
   );

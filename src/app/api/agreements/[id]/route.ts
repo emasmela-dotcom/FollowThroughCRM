@@ -15,6 +15,7 @@ export async function GET(request: NextRequest, { params }: Params) {
       SELECT p.id, p.short_id, p.title, p.direction, p.status, p.due_at, p.notes,
              p.compensation, p.agreed_at, p.completed_at, p.request_changes,
              p.other_party_email, p.other_party_name, p.user_id, p.person_id, p.created_at,
+             p.stripe_link, p.paypal_link, p.cash_app_tag, p.venmo_user, p.zelle_contact, p.bank_notes,
              per.name AS person_name, per.email AS person_email,
              u.email AS creator_email
       FROM promises p
@@ -50,6 +51,12 @@ export async function GET(request: NextRequest, { params }: Params) {
           person_name: row.person_name,
           person_email: row.person_email,
           creator_email: row.creator_email,
+          stripe_link: row.stripe_link,
+          paypal_link: row.paypal_link,
+          cash_app_tag: row.cash_app_tag,
+          venmo_user: row.venmo_user,
+          zelle_contact: row.zelle_contact,
+          bank_notes: row.bank_notes,
         },
       });
     }

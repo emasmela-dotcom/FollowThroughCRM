@@ -21,7 +21,7 @@ export default async function DashboardLayout({
             <Link href="/dashboard" className="font-semibold text-slate-900">
               Follow-Through CRM
             </Link>
-            <p className="text-xs text-slate-500">Turn conversations into confirmed agreements.</p>
+            <p className="text-xs text-slate-500">Turn conversations into confirmed agreements, then payment after completion.</p>
           </div>
           <DashboardNav userEmail={session.user?.email ?? ""} />
         </div>

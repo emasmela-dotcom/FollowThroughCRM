@@ -15,7 +15,7 @@ export default async function Home() {
             Follow Thru CRM
           </h1>
           <p className="mt-2 text-lg text-slate-600">
-            Turn conversations into confirmed agreements.
+            Turn conversations into confirmed agreements, then payment after completion.
           </p>
         </header>
 
