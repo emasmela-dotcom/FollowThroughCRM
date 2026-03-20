@@ -10,6 +10,23 @@ const resend = RESEND_API_KEY ? new Resend(RESEND_API_KEY) : null;
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
 
+type OverdueRow = {
+  promise_id: string;
+  user_id: string;
+  title: string;
+  direction: string;
+  due_at: string;
+  person_name: string | null;
+};
+
+type UnconfirmedRow = {
+  promise_id: string;
+  user_id: string;
+  title: string;
+  created_at: string;
+  person_name: string | null;
+};
+
 export async function GET(req: Request) {
   const authHeader = req.headers.get("authorization");
   if (CRON_SECRET && authHeader !== `Bearer ${CRON_SECRET}`) {
@@ -21,7 +38,7 @@ export async function GET(req: Request) {
   // 1) OVERDUE REMINDERS (existing behavior), tagged as reminder_type = 'overdue'
   //
   // Pending promises that are due/overdue AND have NOT had an "overdue" reminder sent TODAY
-  const overdueRows = await sql`
+  const overdueRows = (await sql`
     SELECT p.id AS promise_id, p.user_id, p.title, p.direction, p.due_at, per.name AS person_name
     FROM promises p
     LEFT JOIN people per ON per.id = p.person_id
@@ -35,7 +52,7 @@ export async function GET(req: Request) {
           AND r.reminder_type = 'overdue'
           AND r.sent_at::date = ${today}
       )
-  `;
+  `) as unknown as OverdueRow[];
 
   // Get user emails for any user that has overdue items
   const userEmailById: Record<string, string> = {};
@@ -44,7 +61,7 @@ export async function GET(req: Request) {
     const users = await sql`
       SELECT id, email FROM users WHERE id = ANY(${overdueUserIds})
     `;
-    for (const u of users as { id: string; email: string }[]) {
+    for (const u of users as unknown as { id: string; email: string }[]) {
       userEmailById[u.id] = u.email;
     }
   }
@@ -52,7 +69,7 @@ export async function GET(req: Request) {
   let sent = 0;
 
   // Group overdue rows by user and send one email per user (digest)
-  const overdueByUser = new Map<string, typeof overdueRows>();
+  const overdueByUser = new Map<string, OverdueRow[]>();
   for (const r of overdueRows) {
     const uid = r.user_id as string;
     if (!overdueByUser.has(uid)) overdueByUser.set(uid, []);
@@ -110,7 +127,7 @@ export async function GET(req: Request) {
   //
   // Pending promises that have not been agreed to within 3+ days of creation,
   // and have NOT had an "unconfirmed" reminder sent TODAY.
-  const unconfirmedRows = await sql`
+  const unconfirmedRowsRaw = await sql`
     SELECT p.id AS promise_id, p.user_id, p.title, p.created_at, per.name AS person_name
     FROM promises p
     LEFT JOIN people per ON per.id = p.person_id
@@ -125,18 +142,19 @@ export async function GET(req: Request) {
           AND r.sent_at::date = ${today}
       )
   `;
+  const unconfirmedRows = unconfirmedRowsRaw as unknown as UnconfirmedRow[];
 
   const unconfirmedUserIds = Array.from(new Set(unconfirmedRows.map((r) => r.user_id as string)));
   if (unconfirmedUserIds.length > 0) {
     const unconfirmedUsers = await sql`
       SELECT id, email FROM users WHERE id = ANY(${unconfirmedUserIds})
     `;
-    for (const u of unconfirmedUsers as { id: string; email: string }[]) {
+    for (const u of unconfirmedUsers as unknown as { id: string; email: string }[]) {
       userEmailById[u.id] = u.email;
     }
   }
 
-  const unconfirmedByUser = new Map<string, typeof unconfirmedRows>();
+  const unconfirmedByUser = new Map<string, UnconfirmedRow[]>();
   for (const r of unconfirmedRows) {
     const uid = r.user_id as string;
     if (!unconfirmedByUser.has(uid)) unconfirmedByUser.set(uid, []);

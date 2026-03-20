@@ -38,7 +38,7 @@ export default async function PeoplePage() {
           Add person
         </Link>
       </div>
-      <PeopleList people={people as PersonRow[]} />
+      <PeopleList people={people as unknown as PersonRow[]} />
     </div>
   );
 }

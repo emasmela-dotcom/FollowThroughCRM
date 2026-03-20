@@ -1,4 +1,4 @@
-import { neon } from "@neondatabase/serverless";
+import postgres from "postgres";
 
 const connectionString = process.env.DATABASE_URL;
 if (!connectionString) {
@@ -6,7 +6,15 @@ if (!connectionString) {
     "DATABASE_URL is not set. Create .env.local (or add in Vercel: Settings → Environment Variables) with DATABASE_URL=your-neon-connection-string."
   );
 }
-const sql = neon(connectionString);
+
+/**
+ * TCP Postgres driver (postgres.js). Uses the host in DATABASE_URL (e.g. ep-…-pooler…neon.tech).
+ * Neon's `neon()` HTTP driver can fail locally with DNS (ENOTFOUND api.*.neon.tech); TCP avoids that.
+ */
+const sql = postgres(connectionString, {
+  ssl: "require",
+  max: 1,
+});
 
 export { sql };
 

@@ -1,0 +1,18 @@
+---
+description: Always state exactly where each command should be pasted or run
+alwaysApply: true
+---
+
+# Command Location Clarity
+
+- Whenever providing a command, explicitly state where to run it before the command.
+- Use a clear location label such as: `Terminal`, `Neon SQL Editor`, `Browser URL bar`, or `Cursor Command Palette`.
+- Never provide a command without a location context.
+- For multi-step instructions, include the location on every step that contains a command.
+- If there are two possible locations, choose one and state it clearly to avoid ambiguity.
+
+Examples:
+
+- Terminal: `npm run dev -- -p 3001`
+- Neon SQL Editor: `SELECT id, title FROM promises ORDER BY created_at DESC LIMIT 5;`
+- Browser URL bar: `http://localhost:3001`

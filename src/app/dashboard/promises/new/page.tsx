@@ -84,7 +84,7 @@ export default async function NewPromisePage({
 
       <div className="mt-6">
         <PromiseForm
-          people={people as { id: string; name: string }[]}
+          people={people as unknown as { id: string; name: string }[]}
           {...templateDefaults}
         />
       </div>

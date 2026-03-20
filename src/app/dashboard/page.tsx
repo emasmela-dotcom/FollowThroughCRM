@@ -113,10 +113,10 @@ export default async function DashboardPage() {
         </div>
       ) : (
       <WaitingOnDashboard
-        theyOwe={theyOwe as PromiseRow[]}
-        iOwe={iOwe as PromiseRow[]}
-        overdue={overdue as PromiseRow[]}
-        upcoming={upcoming as PromiseRow[]}
+        theyOwe={theyOwe as unknown as PromiseRow[]}
+        iOwe={iOwe as unknown as PromiseRow[]}
+        overdue={overdue as unknown as PromiseRow[]}
+        upcoming={upcoming as unknown as PromiseRow[]}
       />
       )}
     </div>

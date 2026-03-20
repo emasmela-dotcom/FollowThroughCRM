@@ -168,65 +168,6 @@ export default function PublicAgreementPage() {
           <p className="text-slate-600 mb-4">{error}</p>
           <Link href="/" className="text-slate-800 underline">Go home</Link>
         </div>
-
-        {(agreement.stripe_link ||
-          agreement.paypal_link ||
-          agreement.cash_app_tag ||
-          agreement.venmo_user ||
-          agreement.zelle_contact ||
-          agreement.bank_notes) && (
-          <section className="p-6 border-t border-slate-200 space-y-3">
-            <h2 className="text-lg font-semibold text-slate-900">How to pay</h2>
-            <div className="flex flex-col gap-2">
-              {agreement.stripe_link && (
-                <a
-                  href={agreement.stripe_link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 self-start rounded-lg bg-[#635BFF] px-4 py-2 text-sm font-medium text-white hover:opacity-90 transition-opacity"
-                >
-                  Pay with Stripe
-                </a>
-              )}
-              {agreement.paypal_link && (
-                <a
-                  href={agreement.paypal_link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 self-start rounded-lg bg-[#003087] px-4 py-2 text-sm font-medium text-white hover:opacity-90 transition-opacity"
-                >
-                  Pay with PayPal
-                </a>
-              )}
-              {agreement.cash_app_tag && (
-                <p className="text-sm text-slate-700">
-                  <span className="font-medium">Cash App:</span>{" "}
-                  <span className="font-mono">{agreement.cash_app_tag}</span>
-                </p>
-              )}
-              {agreement.venmo_user && (
-                <p className="text-sm text-slate-700">
-                  <span className="font-medium">Venmo:</span>{" "}
-                  <span className="font-mono">{agreement.venmo_user}</span>
-                </p>
-              )}
-              {agreement.zelle_contact && (
-                <p className="text-sm text-slate-700">
-                  <span className="font-medium">Zelle:</span>{" "}
-                  <span className="font-mono">{agreement.zelle_contact}</span>
-                </p>
-              )}
-              {agreement.bank_notes && (
-                <div className="text-sm text-slate-700">
-                  <p className="font-medium mb-1">Bank transfer:</p>
-                  <p className="whitespace-pre-wrap text-slate-600 rounded-lg bg-slate-50 border border-slate-200 px-3 py-2 text-xs font-mono">
-                    {agreement.bank_notes}
-                  </p>
-                </div>
-              )}
-            </div>
-          </section>
-        )}
       </div>
     );
   }

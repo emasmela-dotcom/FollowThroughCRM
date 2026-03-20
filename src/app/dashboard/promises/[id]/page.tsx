@@ -72,7 +72,7 @@ export default async function PromiseDetailPage({
       )}
       <PromiseForm
         promiseId={id}
-        people={people as { id: string; name: string }[]}
+        people={people as unknown as { id: string; name: string }[]}
         defaultTitle={p.title as string}
         defaultDirection={(p.direction as "i_owe" | "they_owe") ?? "they_owe"}
         defaultPersonId={p.person_id as string | null}
