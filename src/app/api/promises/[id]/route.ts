@@ -91,14 +91,27 @@ export async function PATCH(
     const v = normalizeOptionalText(message_to_other);
     await sql`UPDATE promises SET message_to_other = ${v}, updated_at = NOW() WHERE id = ${id} AND user_id = ${uid}`;
   }
+  let revisedVersion: number | null = null;
   if (isRevisionEdit) {
     // Any creator edit creates a new revision and clears prior change-request text.
-    await sql`
+    const revisionRows = await sql`
       UPDATE promises
       SET version = COALESCE(version, 1) + 1,
           request_changes = NULL,
           updated_at = NOW()
       WHERE id = ${id} AND user_id = ${uid}
+      RETURNING version
+    `;
+    revisedVersion = (revisionRows[0] as { version?: number } | undefined)?.version ?? null;
+    await sql`
+      INSERT INTO agreement_history (promise_id, action, performed_by, performed_by_email, notes)
+      VALUES (
+        ${id},
+        'revise',
+        ${uid},
+        ${session.user.email ?? null},
+        ${revisedVersion ? `Creator updated agreement to v${revisedVersion}` : "Creator updated agreement"}
+      )
     `;
   }
   const [row] = await sql`
