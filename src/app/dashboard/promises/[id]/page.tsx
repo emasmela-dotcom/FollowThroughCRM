@@ -11,6 +11,15 @@ import { AgreementCountdown } from "@/components/agreements/AgreementCountdown";
 import { StatusBadge } from "@/components/agreements/StatusBadge";
 import PaymentOptionsSectionWrapper from "./PaymentOptionsSectionWrapper";
 
+function formatActivityAction(action: string): string {
+  if (action === "request_change") return "Requested changes";
+  if (action === "agree") return "Agreed";
+  if (action === "complete") return "Marked complete";
+  if (action === "cancel") return "Cancelled";
+  if (action === "revise") return "Creator revised agreement";
+  return action.replace(/_/g, " ");
+}
+
 export default async function PromiseDetailPage({
   params,
 }: {
@@ -123,7 +132,7 @@ export default async function PromiseDetailPage({
             {activity.map((h, idx) => (
               <li key={`${h.action}-${h.created_at}-${idx}`} className="rounded-md border border-slate-200 p-2">
                 <p className="text-sm text-slate-800">
-                  <span className="font-medium">{h.action.replace(/_/g, " ")}</span>
+                  <span className="font-medium">{formatActivityAction(h.action)}</span>
                   {h.performed_by_email ? ` by ${h.performed_by_email}` : ""}
                 </p>
                 {h.notes && <p className="text-sm text-slate-600 mt-1 whitespace-pre-wrap">{h.notes}</p>}
