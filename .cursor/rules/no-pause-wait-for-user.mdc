@@ -1,0 +1,10 @@
+---
+description: Do not pause or defer work waiting for the user to speak next
+alwaysApply: true
+---
+
+# No pause waiting on the user
+
+- Do **not** stop mid-task with “when you’re ready,” “tell me when,” or “we can do that later” if the next step is something you can do in this session (edits, terminal, commit, docs).
+- Finish the current thread of work: implement, verify when possible, commit/push when project rules say to—then stop with a short **done** summary.
+- Only wait when the user must act in a system you cannot use (e.g. paste a secret in the UI, approve payment, click Deploy in Vercel). In that case, state the **single** action left for them and what you already completed.
