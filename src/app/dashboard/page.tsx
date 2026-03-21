@@ -3,6 +3,7 @@ import { authOptions } from "@/lib/auth";
 import { sql } from "@/lib/db";
 import { WaitingOnDashboard } from "./WaitingOnDashboard";
 import Link from "next/link";
+import { OnboardingChecklist } from "@/components/onboarding/OnboardingChecklist";
 
 export default async function DashboardPage() {
   const session = await getServerSession(authOptions);
@@ -40,6 +41,10 @@ export default async function DashboardPage() {
     ORDER BY h.created_at DESC
     LIMIT 5
   `;
+  const [peopleCountRow] = await sql`
+    SELECT COUNT(*)::int AS c FROM people WHERE user_id = ${uid}
+  `;
+  const peopleCount = (peopleCountRow as { c: number })?.c ?? 0;
   const today = new Date().toISOString().slice(0, 10);
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
@@ -73,6 +78,8 @@ export default async function DashboardPage() {
           Add request
         </Link>
       </div>
+
+      <OnboardingChecklist peopleCount={peopleCount} activePromiseCount={promises.length} />
 
       <div className="rounded-xl border border-slate-200 bg-slate-50/80 p-4 border-l-4 border-l-slate-400">
         <div className="flex flex-wrap gap-6 text-sm text-slate-700">

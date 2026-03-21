@@ -2,6 +2,7 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { authOptions } from "@/lib/auth";
 import Link from "next/link";
+import { SITE } from "@/lib/siteCopy";
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
@@ -12,11 +13,9 @@ export default async function Home() {
       <div className="mx-auto max-w-4xl px-4 py-12 sm:py-16">
         <header className="text-center mb-12">
           <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight">
-            Follow Thru CRM
+            {SITE.brandName}
           </h1>
-          <p className="mt-2 text-lg text-slate-600">
-            Turn conversations into confirmed agreements, then payment after completion.
-          </p>
+          <p className="mt-2 text-lg text-slate-600">{SITE.tagline}</p>
         </header>
 
         <div className="rounded-xl border border-slate-200/80 bg-white p-6 shadow-sm mb-10 text-center">
@@ -40,9 +39,7 @@ export default async function Home() {
           </div>
         </div>
 
-        <p className="text-center text-slate-500 text-sm mb-6">
-          Used by freelancers, contractors, and anyone who needs a clear yes.
-        </p>
+        <p className="text-center text-slate-500 text-sm mb-6">{SITE.audienceLine}</p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { AppFooter } from "@/components/AppFooter";
+import { SITE } from "@/lib/siteCopy";
 
 export default function SignupPage() {
   const [email, setEmail] = useState("");
@@ -42,8 +43,8 @@ export default function SignupPage() {
         <p className="mb-4">
           <Link href="/" className="text-sm text-slate-500 hover:text-slate-700">← Home</Link>
         </p>
-        <h1 className="text-xl font-semibold text-slate-900 mb-1">Follow-Through CRM</h1>
-        <p className="text-slate-500 text-sm mb-6">Create your account</p>
+        <h1 className="text-xl font-semibold text-slate-900 mb-1">{SITE.brandName}</h1>
+        <p className="text-slate-500 text-sm mb-6">Create your account—agreements, due dates, and follow-ups in one place.</p>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1">Email</label>

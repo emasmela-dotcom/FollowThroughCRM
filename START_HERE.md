@@ -18,3 +18,12 @@ After that, `message_to_other` (form → public agreement + send-link email) and
 ## Local app
 
 - `.env.local`: `DATABASE_URL` must be the raw connection string (no `psql '...'` wrapper). `NEXTAUTH_URL` must match how you run the app (e.g. `http://localhost:4125` if you use `-p 4125`).
+
+## Verify
+
+```bash
+npm test
+npm run build
+```
+
+Monitoring endpoints: `GET /api/health` (liveness), `GET /api/ready` (DB). See `docs/MONITORING.md`.

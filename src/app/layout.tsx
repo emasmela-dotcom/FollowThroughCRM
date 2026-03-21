@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Providers } from "./providers";
+import { Analytics } from "@/components/Analytics";
+import { SITE } from "@/lib/siteCopy";
 
 export const metadata: Metadata = {
-  title: "Follow-Through CRM",
-  description: "A CRM for responsibility. Track what you're waiting on and who you're waiting on it from.",
+  title: SITE.brandName,
+  description: SITE.description,
 };
 
 export default function RootLayout({
@@ -16,6 +18,7 @@ export default function RootLayout({
     <html lang="en">
       <body className="app-bg">
         <Providers>{children}</Providers>
+        <Analytics />
       </body>
     </html>
   );

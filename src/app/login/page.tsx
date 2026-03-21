@@ -5,6 +5,7 @@ import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { AppFooter } from "@/components/AppFooter";
+import { SITE } from "@/lib/siteCopy";
 
 function LoginForm() {
   const [email, setEmail] = useState("");
@@ -36,8 +37,8 @@ function LoginForm() {
         <p className="mb-4">
           <Link href="/" className="text-sm text-slate-500 hover:text-slate-700">← Home</Link>
         </p>
-        <h1 className="text-xl font-semibold text-slate-900 mb-1">Follow-Through CRM</h1>
-        <p className="text-slate-500 text-sm mb-6">Sign in to your account</p>
+        <h1 className="text-xl font-semibold text-slate-900 mb-1">{SITE.brandName}</h1>
+        <p className="text-slate-500 text-sm mb-6">Sign in to track what you’re waiting on—and who you’re waiting on it from.</p>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1">Email</label>

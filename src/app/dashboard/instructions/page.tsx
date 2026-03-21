@@ -1,15 +1,14 @@
 import Link from "next/link";
+import { SITE } from "@/lib/siteCopy";
 
 export default function InstructionsPage() {
   return (
     <div className="max-w-2xl space-y-6">
-      <h1 className="text-2xl font-semibold text-slate-900">Instructions</h1>
+      <h1 className="text-2xl font-semibold text-slate-900">How it works</h1>
       <p className="text-slate-600 text-sm">
-        Follow Thru CRM turns conversations into confirmed agreements. Here’s how to use it.
+        {SITE.brandName} turns conversations into confirmed agreements. Here’s the flow.
       </p>
-      <p className="text-slate-500 text-sm italic">
-        Used by freelancers, contractors, and anyone who needs a clear yes.
-      </p>
+      <p className="text-slate-500 text-sm italic">{SITE.audienceLine}</p>
 
       <div className="rounded-lg border border-slate-200 bg-slate-50/80 p-4 text-sm text-slate-700">
         <p className="font-medium text-slate-900 mb-1">Single source of truth</p>

@@ -4,6 +4,7 @@ import { authOptions } from "@/lib/auth";
 import Link from "next/link";
 import { DashboardNav } from "./DashboardNav";
 import { AppFooter } from "@/components/AppFooter";
+import { SITE } from "@/lib/siteCopy";
 
 export default async function DashboardLayout({
   children,
@@ -19,9 +20,9 @@ export default async function DashboardLayout({
         <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-4">
           <div>
             <Link href="/dashboard" className="font-semibold text-slate-900">
-              Follow-Through CRM
+              {SITE.brandName}
             </Link>
-            <p className="text-xs text-slate-500">Turn conversations into confirmed agreements, then payment after completion.</p>
+            <p className="text-xs text-slate-500">{SITE.tagline}</p>
           </div>
           <DashboardNav userEmail={session.user?.email ?? ""} />
         </div>

@@ -43,6 +43,22 @@ Get the app into git and running with **no usage and no cost** (no Resend, no re
 
 Cron still runs on Vercel but sends no emails when `RESEND_API_KEY` is unset.
 
+### Tests
+
+```bash
+npm test
+```
+
+Unit tests live in `src/**/*.test.ts` (Vitest). Run locally before deploy.
+
+### Monitoring
+
+- **`GET /api/health`** — liveness (no DB).
+- **`GET /api/ready`** — readiness (DB ping).
+- **Vercel Analytics** — enabled in app layout; turn on **Web Analytics** in the Vercel project.
+
+See `docs/MONITORING.md` for details.
+
 ---
 
 ## No-cost setup (what you pay: $0)
