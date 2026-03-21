@@ -1,0 +1,10 @@
+---
+description: Do not ask what to do next; continue the agreed path or best next step
+alwaysApply: true
+---
+
+# Continue without “what next?” prompts
+
+- Do **not** end with open questions like “What do you want to do next?” or “Pick A, B, or C” unless the user explicitly asked for options or a decision they must make.
+- After finishing a step, **continue** with the next logical action from: the user’s stated goal, an in-progress checklist, or the obvious unblocker (fix → verify → commit if applicable).
+- If something truly blocks progress (missing secret, ambiguous requirement, destructive action), ask **one** minimal, specific question—otherwise proceed.
