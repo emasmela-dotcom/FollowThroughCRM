@@ -28,6 +28,20 @@ export async function PATCH(
     bank_notes,
     message_to_other,
   } = body;
+  const isRevisionEdit =
+    title !== undefined ||
+    direction !== undefined ||
+    person_id !== undefined ||
+    due_at !== undefined ||
+    notes !== undefined ||
+    compensation !== undefined ||
+    stripe_link !== undefined ||
+    paypal_link !== undefined ||
+    cash_app_tag !== undefined ||
+    venmo_user !== undefined ||
+    zelle_contact !== undefined ||
+    bank_notes !== undefined ||
+    message_to_other !== undefined;
   if (title !== undefined) await sql`UPDATE promises SET title = ${String(title).trim()}, updated_at = NOW() WHERE id = ${id} AND user_id = ${uid}`;
   if (direction !== undefined) await sql`UPDATE promises SET direction = ${direction === "they_owe" ? "they_owe" : "i_owe"}, updated_at = NOW() WHERE id = ${id} AND user_id = ${uid}`;
   if (newStatus !== undefined) await sql`UPDATE promises SET status = ${newStatus === "done" ? "done" : newStatus === "cancelled" ? "cancelled" : "pending"}, updated_at = NOW() WHERE id = ${id} AND user_id = ${uid}`;
@@ -66,8 +80,18 @@ export async function PATCH(
         : null;
     await sql`UPDATE promises SET message_to_other = ${v}, updated_at = NOW() WHERE id = ${id} AND user_id = ${uid}`;
   }
+  if (isRevisionEdit) {
+    // Any creator edit creates a new revision and clears prior change-request text.
+    await sql`
+      UPDATE promises
+      SET version = COALESCE(version, 1) + 1,
+          request_changes = NULL,
+          updated_at = NOW()
+      WHERE id = ${id} AND user_id = ${uid}
+    `;
+  }
   const [row] = await sql`
-    SELECT p.id, p.title, p.direction, p.status, p.due_at, p.notes, p.message_to_other, p.person_id, p.created_at,
+    SELECT p.id, p.title, p.direction, p.status, p.due_at, p.notes, p.request_changes, p.version, p.message_to_other, p.person_id, p.created_at,
            p.stripe_link, p.paypal_link, p.cash_app_tag, p.venmo_user, p.zelle_contact, p.bank_notes,
            per.name AS person_name, per.email AS person_email
     FROM promises p

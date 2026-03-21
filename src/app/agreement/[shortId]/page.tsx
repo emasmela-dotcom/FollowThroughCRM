@@ -191,6 +191,9 @@ export default function PublicAgreementPage() {
             {agreement.creator_email ? `Agreement from ${agreement.creator_email}` : "Agreement"}
           </p>
           <h1 className="text-xl font-semibold text-slate-900">{agreement.title}</h1>
+          {!!agreement.version && (
+            <p className="text-xs text-slate-500 mt-1">Revision v{agreement.version}</p>
+          )}
           {agreement.compensation && (
             <p className="text-slate-600 mt-2">Compensation: {agreement.compensation}</p>
           )}

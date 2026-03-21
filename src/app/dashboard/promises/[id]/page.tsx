@@ -21,7 +21,7 @@ export default async function PromiseDetailPage({
   const { id: rawId } = await params;
   const id = rawId.split("?")[0];
   const [p] = await sql`
-    SELECT p.id, p.title, p.direction, p.status, p.due_at, p.notes, p.message_to_other, p.person_id, p.created_at,
+    SELECT p.id, p.title, p.direction, p.status, p.due_at, p.notes, p.request_changes, p.version, p.message_to_other, p.person_id, p.created_at,
            p.short_id, p.compensation, p.agreed_at, p.completed_at,
            p.stripe_link, p.paypal_link, p.cash_app_tag, p.venmo_user, p.zelle_contact, p.bank_notes,
            per.name AS person_name, per.email AS person_email
@@ -70,6 +70,15 @@ export default async function PromiseDetailPage({
         {p.title as string}
         {status === "done" && <span className="ml-2 text-sm font-normal text-green-600">(done)</span>}
       </h1>
+      {!!(p as { version?: number | null }).version && (
+        <p className="text-xs text-slate-500">Revision v{(p as { version?: number | null }).version}</p>
+      )}
+      {!!(p as { request_changes?: string | null }).request_changes && (
+        <div className="rounded-md border border-rose-200 bg-rose-50 p-3 text-sm text-rose-900">
+          <p className="font-medium">Change requested</p>
+          <p className="mt-1 whitespace-pre-wrap">{(p as { request_changes?: string | null }).request_changes}</p>
+        </div>
+      )}
       <div className="flex flex-wrap items-center gap-3 text-sm">
         <AgreementCountdown
           dueAt={p.due_at as string | null}
