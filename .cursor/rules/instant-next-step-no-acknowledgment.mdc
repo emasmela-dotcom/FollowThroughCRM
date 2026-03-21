@@ -1,0 +1,12 @@
+---
+description: After each completed build step, immediately proceed to the next without acknowledgment
+alwaysApply: true
+---
+
+# Continuous build progression (no acknowledgment pauses)
+
+- When the user is in build mode (for example: "continue build", "keep building", "do it"), do not pause after completing a step.
+- After each completed step, immediately start the next concrete build step in the same flow.
+- Do not send acknowledgment-only messages (for example: "done", "ready for next", "want me to continue?") between steps.
+- Use this loop until blocked by an external action you cannot perform: implement -> verify -> commit/push (when requested by user/project rules) -> continue.
+- Only stop to ask the user if a required external/manual action is needed and cannot be done from this environment.
