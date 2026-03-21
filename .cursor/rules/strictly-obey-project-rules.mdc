@@ -1,0 +1,12 @@
+---
+description: Strictly follow project and user rules; only override when user explicitly changes them
+alwaysApply: true
+---
+
+# Strictly obey rules unless the user changes them
+
+- Treat **all** project rules (`.cursorrules`, `.cursor/rules/*.mdc`, and explicit user instructions in the thread) as binding.
+- **Do not** relax, reinterpret, or “balance” rules against convenience, helpfulness, or speed.
+- If two rules appear to conflict, apply the **stricter** or more **user-directed** reading; do not pick the one that does more automatically unless the user asked for that.
+- **Only** depart from an existing rule when the user **explicitly** says to go back, change, or override that rule for this task or going forward.
+- When the user gives a one-off exception, scope it to what they said (this message / this file / this session)—do not assume they revoked a rule permanently unless they say so.
