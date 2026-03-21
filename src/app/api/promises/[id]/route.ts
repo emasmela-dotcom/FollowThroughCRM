@@ -3,6 +3,14 @@ import { NextResponse } from "next/server";
 import { authOptions } from "@/lib/auth";
 import { sql } from "@/lib/db";
 
+function normalizeOptionalText(value: unknown): string | null {
+  if (value === null || value === undefined) return null;
+  const trimmed = String(value).trim();
+  if (!trimmed) return null;
+  if (trimmed.toLowerCase() === "null") return null;
+  return trimmed;
+}
+
 export async function PATCH(
   req: Request,
   { params }: { params: Promise<{ id: string }> }
@@ -47,37 +55,40 @@ export async function PATCH(
   if (newStatus !== undefined) await sql`UPDATE promises SET status = ${newStatus === "done" ? "done" : newStatus === "cancelled" ? "cancelled" : "pending"}, updated_at = NOW() WHERE id = ${id} AND user_id = ${uid}`;
   if (person_id !== undefined) await sql`UPDATE promises SET person_id = ${person_id || null}, updated_at = NOW() WHERE id = ${id} AND user_id = ${uid}`;
   if (due_at !== undefined) await sql`UPDATE promises SET due_at = ${due_at || null}, updated_at = NOW() WHERE id = ${id} AND user_id = ${uid}`;
-  if (notes !== undefined) await sql`UPDATE promises SET notes = ${String(notes).trim() ?? null}, updated_at = NOW() WHERE id = ${id} AND user_id = ${uid}`;
-  if (compensation !== undefined) await sql`UPDATE promises SET compensation = ${String(compensation).trim() || null}, updated_at = NOW() WHERE id = ${id} AND user_id = ${uid}`;
+  if (notes !== undefined) {
+    const v = normalizeOptionalText(notes);
+    await sql`UPDATE promises SET notes = ${v}, updated_at = NOW() WHERE id = ${id} AND user_id = ${uid}`;
+  }
+  if (compensation !== undefined) {
+    const v = normalizeOptionalText(compensation);
+    await sql`UPDATE promises SET compensation = ${v}, updated_at = NOW() WHERE id = ${id} AND user_id = ${uid}`;
+  }
   if (stripe_link !== undefined) {
-    const v = String(stripe_link).trim();
-    await sql`UPDATE promises SET stripe_link = ${v || null}, updated_at = NOW() WHERE id = ${id} AND user_id = ${uid}`;
+    const v = normalizeOptionalText(stripe_link);
+    await sql`UPDATE promises SET stripe_link = ${v}, updated_at = NOW() WHERE id = ${id} AND user_id = ${uid}`;
   }
   if (paypal_link !== undefined) {
-    const v = String(paypal_link).trim();
-    await sql`UPDATE promises SET paypal_link = ${v || null}, updated_at = NOW() WHERE id = ${id} AND user_id = ${uid}`;
+    const v = normalizeOptionalText(paypal_link);
+    await sql`UPDATE promises SET paypal_link = ${v}, updated_at = NOW() WHERE id = ${id} AND user_id = ${uid}`;
   }
   if (cash_app_tag !== undefined) {
-    const v = String(cash_app_tag).trim();
-    await sql`UPDATE promises SET cash_app_tag = ${v || null}, updated_at = NOW() WHERE id = ${id} AND user_id = ${uid}`;
+    const v = normalizeOptionalText(cash_app_tag);
+    await sql`UPDATE promises SET cash_app_tag = ${v}, updated_at = NOW() WHERE id = ${id} AND user_id = ${uid}`;
   }
   if (venmo_user !== undefined) {
-    const v = String(venmo_user).trim();
-    await sql`UPDATE promises SET venmo_user = ${v || null}, updated_at = NOW() WHERE id = ${id} AND user_id = ${uid}`;
+    const v = normalizeOptionalText(venmo_user);
+    await sql`UPDATE promises SET venmo_user = ${v}, updated_at = NOW() WHERE id = ${id} AND user_id = ${uid}`;
   }
   if (zelle_contact !== undefined) {
-    const v = String(zelle_contact).trim();
-    await sql`UPDATE promises SET zelle_contact = ${v || null}, updated_at = NOW() WHERE id = ${id} AND user_id = ${uid}`;
+    const v = normalizeOptionalText(zelle_contact);
+    await sql`UPDATE promises SET zelle_contact = ${v}, updated_at = NOW() WHERE id = ${id} AND user_id = ${uid}`;
   }
   if (bank_notes !== undefined) {
-    const v = String(bank_notes).trim();
-    await sql`UPDATE promises SET bank_notes = ${v || null}, updated_at = NOW() WHERE id = ${id} AND user_id = ${uid}`;
+    const v = normalizeOptionalText(bank_notes);
+    await sql`UPDATE promises SET bank_notes = ${v}, updated_at = NOW() WHERE id = ${id} AND user_id = ${uid}`;
   }
   if (message_to_other !== undefined) {
-    const v =
-      typeof message_to_other === "string" && message_to_other.trim()
-        ? message_to_other.trim()
-        : null;
+    const v = normalizeOptionalText(message_to_other);
     await sql`UPDATE promises SET message_to_other = ${v}, updated_at = NOW() WHERE id = ${id} AND user_id = ${uid}`;
   }
   if (isRevisionEdit) {
