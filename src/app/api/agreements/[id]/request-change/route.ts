@@ -32,7 +32,9 @@ export async function POST(request: NextRequest, { params }: Params) {
 
     await sql`
       UPDATE promises
-      SET request_changes = ${message}, updated_at = NOW()
+      SET request_changes = ${message},
+          version = COALESCE(version, 1) + 1,
+          updated_at = NOW()
       WHERE id = ${data.id}
     `;
 

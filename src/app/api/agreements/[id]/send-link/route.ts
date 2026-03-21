@@ -20,10 +20,12 @@ export async function POST(request: NextRequest, { params }: Params) {
     const uid = session.user.id;
 
     const rows = await sql`
-      SELECT p.id, p.short_id, p.title, p.other_party_email,
-             per.id AS person_id, per.name AS person_name, per.email AS person_email
+      SELECT p.id, p.short_id, p.title, p.other_party_email, p.message_to_other,
+             per.id AS person_id, per.name AS person_name, per.email AS person_email,
+             u.email AS creator_email
       FROM promises p
       LEFT JOIN people per ON per.id = p.person_id AND per.user_id = ${uid}
+      LEFT JOIN users u ON u.id = p.user_id
       WHERE (p.id::text = ${promiseId} OR p.short_id = ${promiseId})
         AND p.user_id = ${uid}
       LIMIT 1
@@ -33,9 +35,11 @@ export async function POST(request: NextRequest, { params }: Params) {
       short_id: string | null;
       title: string;
       other_party_email: string | null;
+      message_to_other: string | null;
       person_id: string | null;
       person_name: string | null;
       person_email: string | null;
+      creator_email: string | null;
     } | undefined;
 
     if (!row) {
@@ -67,7 +71,13 @@ export async function POST(request: NextRequest, { params }: Params) {
     }
 
     const subject = `Agreement: ${row.title}`;
-    const text = `You're invited to review and confirm an agreement:\n\n${row.title}\n\nOpen this link to view and agree:\n${agreementUrl}\n\n— Follow Thru CRM`;
+    const note = row.message_to_other?.trim();
+    const fromLine = row.creator_email?.trim()
+      ? `A note from ${row.creator_email.trim()}:\n\n${note}\n\n`
+      : note
+        ? `A note from the agreement creator:\n\n${note}\n\n`
+        : "";
+    const text = `You're invited to review and confirm an agreement:\n\n${row.title}\n\n${note ? fromLine : ""}Open this link to view and agree:\n${agreementUrl}\n\n— Follow Thru CRM`;
 
     await resend.emails.send({
       from: "Follow Thru CRM <onboarding@resend.dev>",

@@ -17,6 +17,7 @@ type PromiseFormProps = {
   defaultDueAt?: string | null;
   defaultNotes?: string | null;
   defaultCompensation?: string | null;
+  defaultMessageToOther?: string | null;
 };
 
 export function PromiseForm({
@@ -28,6 +29,7 @@ export function PromiseForm({
   defaultDueAt = "",
   defaultNotes = "",
   defaultCompensation = "",
+  defaultMessageToOther = "",
 }: PromiseFormProps) {
   const router = useRouter();
 
@@ -37,6 +39,7 @@ export function PromiseForm({
   const [dueAt, setDueAt] = useState(defaultDueAt ? String(defaultDueAt).slice(0, 10) : "");
   const [notes, setNotes] = useState(defaultNotes ?? "");
   const [compensation, setCompensation] = useState(defaultCompensation ?? "");
+  const [messageToOther, setMessageToOther] = useState(defaultMessageToOther ?? "");
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
@@ -50,6 +53,7 @@ export function PromiseForm({
       due_at: dueAt || null,
       notes: notes || null,
       compensation: compensation || null,
+      message_to_other: messageToOther.trim() || null,
     };
 
     const res = await fetch(
@@ -162,6 +166,22 @@ export function PromiseForm({
           onChange={(e) => setCompensation(e.target.value)}
           placeholder="e.g. $150, 2 hours"
           className="w-full border border-slate-300 rounded-md px-3 py-2 text-slate-900"
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium mb-1 text-slate-700">
+          Message to them (optional)
+        </label>
+        <p className="text-xs text-slate-500 mb-1">
+          They’ll see this on the agreement link and in the email if you send the link from here.
+        </p>
+        <textarea
+          value={messageToOther}
+          onChange={(e) => setMessageToOther(e.target.value)}
+          placeholder="e.g. Thanks for the quick turnaround — please confirm by Friday."
+          className="w-full border border-slate-300 rounded-md px-3 py-2 text-slate-900"
+          rows={3}
         />
       </div>
 

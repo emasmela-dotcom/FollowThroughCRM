@@ -21,7 +21,7 @@ export default async function PromiseDetailPage({
   const { id: rawId } = await params;
   const id = rawId.split("?")[0];
   const [p] = await sql`
-    SELECT p.id, p.title, p.direction, p.status, p.due_at, p.notes, p.person_id, p.created_at,
+    SELECT p.id, p.title, p.direction, p.status, p.due_at, p.notes, p.message_to_other, p.person_id, p.created_at,
            p.short_id, p.compensation, p.agreed_at, p.completed_at,
            p.stripe_link, p.paypal_link, p.cash_app_tag, p.venmo_user, p.zelle_contact, p.bank_notes,
            per.name AS person_name, per.email AS person_email
@@ -79,6 +79,7 @@ export default async function PromiseDetailPage({
         defaultDueAt={p.due_at as string | null}
         defaultNotes={p.notes as string | null}
         defaultCompensation={p.compensation as string | null}
+        defaultMessageToOther={(p as { message_to_other?: string | null }).message_to_other ?? null}
       />
       <PaymentOptionsSectionWrapper
         promiseId={p.id as string}

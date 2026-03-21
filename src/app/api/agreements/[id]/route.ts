@@ -13,7 +13,7 @@ export async function GET(request: NextRequest, { params }: Params) {
 
     const rows = await sql`
       SELECT p.id, p.short_id, p.title, p.direction, p.status, p.due_at, p.notes,
-             p.compensation, p.agreed_at, p.completed_at, p.request_changes,
+             p.compensation, p.agreed_at, p.completed_at, p.request_changes, p.message_to_other, p.version,
              p.other_party_email, p.other_party_name, p.user_id, p.person_id, p.created_at,
              p.stripe_link, p.paypal_link, p.cash_app_tag, p.venmo_user, p.zelle_contact, p.bank_notes,
              per.name AS person_name, per.email AS person_email,
@@ -57,6 +57,8 @@ export async function GET(request: NextRequest, { params }: Params) {
           venmo_user: row.venmo_user,
           zelle_contact: row.zelle_contact,
           bank_notes: row.bank_notes,
+          message_to_other: row.message_to_other,
+          version: row.version,
         },
       });
     }

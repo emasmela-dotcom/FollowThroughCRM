@@ -23,6 +23,8 @@ type Agreement = {
   venmo_user?: string | null;
   zelle_contact?: string | null;
   bank_notes?: string | null;
+  message_to_other?: string | null;
+  version?: number | null;
 };
 
 function formatCountdown(ms: number): string {
@@ -191,6 +193,14 @@ export default function PublicAgreementPage() {
           <h1 className="text-xl font-semibold text-slate-900">{agreement.title}</h1>
           {agreement.compensation && (
             <p className="text-slate-600 mt-2">Compensation: {agreement.compensation}</p>
+          )}
+          {agreement.message_to_other?.trim() && (
+            <div className="mt-4 rounded-lg border border-slate-200 bg-slate-50 p-4 text-slate-800 text-sm whitespace-pre-wrap">
+              <p className="text-xs font-medium text-slate-500 uppercase tracking-wide mb-1">
+                Message for you
+              </p>
+              {agreement.message_to_other.trim()}
+            </div>
           )}
           {agreement.due_at && !isDone && (
             <LiveCountdown dueAt={agreement.due_at} status={agreement.status} />

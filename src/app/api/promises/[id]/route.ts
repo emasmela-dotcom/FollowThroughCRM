@@ -26,6 +26,7 @@ export async function PATCH(
     venmo_user,
     zelle_contact,
     bank_notes,
+    message_to_other,
   } = body;
   if (title !== undefined) await sql`UPDATE promises SET title = ${String(title).trim()}, updated_at = NOW() WHERE id = ${id} AND user_id = ${uid}`;
   if (direction !== undefined) await sql`UPDATE promises SET direction = ${direction === "they_owe" ? "they_owe" : "i_owe"}, updated_at = NOW() WHERE id = ${id} AND user_id = ${uid}`;
@@ -58,8 +59,15 @@ export async function PATCH(
     const v = String(bank_notes).trim();
     await sql`UPDATE promises SET bank_notes = ${v || null}, updated_at = NOW() WHERE id = ${id} AND user_id = ${uid}`;
   }
+  if (message_to_other !== undefined) {
+    const v =
+      typeof message_to_other === "string" && message_to_other.trim()
+        ? message_to_other.trim()
+        : null;
+    await sql`UPDATE promises SET message_to_other = ${v}, updated_at = NOW() WHERE id = ${id} AND user_id = ${uid}`;
+  }
   const [row] = await sql`
-    SELECT p.id, p.title, p.direction, p.status, p.due_at, p.notes, p.person_id, p.created_at,
+    SELECT p.id, p.title, p.direction, p.status, p.due_at, p.notes, p.message_to_other, p.person_id, p.created_at,
            p.stripe_link, p.paypal_link, p.cash_app_tag, p.venmo_user, p.zelle_contact, p.bank_notes,
            per.name AS person_name, per.email AS person_email
     FROM promises p

@@ -92,6 +92,12 @@ export async function initDb() {
   `;
   // Agreement documents (contract PDFs stored in DB to stay $0)
   await sql`
+    ALTER TABLE promises ADD COLUMN IF NOT EXISTS message_to_other TEXT;
+  `;
+  await sql`
+    ALTER TABLE promises ADD COLUMN IF NOT EXISTS version INTEGER NOT NULL DEFAULT 1;
+  `;
+  await sql`
     CREATE TABLE IF NOT EXISTS agreement_documents (
       id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
       promise_id UUID NOT NULL REFERENCES promises(id) ON DELETE CASCADE,
