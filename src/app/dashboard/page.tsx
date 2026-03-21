@@ -32,6 +32,14 @@ export default async function DashboardPage() {
     SELECT COUNT(*)::int AS count FROM promises
     WHERE user_id = ${uid} AND status IN ('done', 'cancelled')
   `;
+  const recentChangeRequests = await sql`
+    SELECT h.created_at, h.notes, h.performed_by_email, p.id AS promise_id, p.title
+    FROM agreement_history h
+    JOIN promises p ON p.id = h.promise_id
+    WHERE p.user_id = ${uid} AND h.action = 'request_change'
+    ORDER BY h.created_at DESC
+    LIMIT 5
+  `;
   const today = new Date().toISOString().slice(0, 10);
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
@@ -93,6 +101,37 @@ export default async function DashboardPage() {
             <p className={awaitingCount > 0 ? "mt-1" : ""}><strong>{dueTomorrow.length}</strong> due tomorrow.</p>
           )}
           <p className="mt-2 text-amber-800/90 text-xs">Tip: Copy the agreement link and send it in email or chat.</p>
+        </div>
+      )}
+
+      {(recentChangeRequests as unknown as {
+        created_at: string;
+        notes: string | null;
+        performed_by_email: string | null;
+        promise_id: string;
+        title: string;
+      }[]).length > 0 && (
+        <div className="rounded-lg border border-rose-200 bg-rose-50 p-4">
+          <p className="text-sm font-semibold text-rose-900">Recent change requests</p>
+          <ul className="mt-2 space-y-2">
+            {(recentChangeRequests as unknown as {
+              created_at: string;
+              notes: string | null;
+              performed_by_email: string | null;
+              promise_id: string;
+              title: string;
+            }[]).map((item, idx) => (
+              <li key={`${item.promise_id}-${item.created_at}-${idx}`} className="text-sm text-rose-900">
+                <Link href={`/dashboard/promises/${item.promise_id}`} className="font-medium underline underline-offset-1 hover:text-rose-700">
+                  {item.title}
+                </Link>
+                <span className="text-rose-800/90"> — {item.notes || "Requested changes"}</span>
+                <span className="block text-xs text-rose-800/80 mt-0.5">
+                  {item.performed_by_email || "anonymous"} · {new Date(item.created_at).toLocaleString()}
+                </span>
+              </li>
+            ))}
+          </ul>
         </div>
       )}
 
