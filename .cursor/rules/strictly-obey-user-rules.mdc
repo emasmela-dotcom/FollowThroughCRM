@@ -1,0 +1,11 @@
+---
+description: Strictly obey workspace and user rules unless user explicitly overrides
+alwaysApply: true
+---
+
+# Strictly obey rules
+
+- Treat **all** binding project rules as mandatory: `.cursorrules`, `.cursor/rules/*.mdc`, and any rule the user states in the conversation as a standing instruction.
+- **Do not** soften, skip, or replace those rules with general “best practices,” “being helpful,” or model defaults.
+- **Do not** change or contradict an agreed rule unless the user **explicitly** says to go back, change, override, or relax that rule.
+- If two rules appear to conflict, follow the **stricter or more user-directed** reading; if still unclear, state the conflict in one line and apply the option that matches the user’s last explicit instruction—not the option that does more.
