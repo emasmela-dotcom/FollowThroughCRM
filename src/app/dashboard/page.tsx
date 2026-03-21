@@ -9,7 +9,7 @@ export default async function DashboardPage() {
   if (!session?.user?.id) return null;
   const uid = session.user.id;
   const promises = await sql`
-    SELECT p.id, p.title, p.direction, p.status, p.due_at, p.notes, p.created_at,
+    SELECT p.id, p.title, p.direction, p.status, p.due_at, p.notes, p.request_changes, p.created_at,
            per.id AS person_id, per.name AS person_name, per.email AS person_email
     FROM promises p
     LEFT JOIN people per ON per.id = p.person_id
@@ -169,6 +169,7 @@ export type PromiseRow = {
   status: string;
   due_at: string | null;
   notes: string | null;
+  request_changes?: string | null;
   created_at: string;
   person_id: string | null;
   person_name: string | null;

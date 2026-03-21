@@ -70,6 +70,11 @@ function Card({
                   {p.person_name && (
                     <span className="ml-2 text-slate-500">— {p.person_name}</span>
                   )}
+                  {p.request_changes && (
+                    <span className="ml-2 inline-flex items-center rounded-full bg-rose-100 px-2 py-0.5 text-xs font-medium text-rose-800">
+                      Change requested
+                    </span>
+                  )}
                   {p.due_at && (
                     <span className="ml-2 text-slate-400">
                       due {String(p.due_at).slice(0, 10)}
