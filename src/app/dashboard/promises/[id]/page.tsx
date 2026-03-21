@@ -33,6 +33,19 @@ export default async function PromiseDetailPage({
   const people = await sql`
     SELECT id, name FROM people WHERE user_id = ${session.user.id} ORDER BY name
   `;
+  const history = await sql`
+    SELECT action, performed_by_email, notes, created_at
+    FROM agreement_history
+    WHERE promise_id = ${p.id as string}
+    ORDER BY created_at DESC
+    LIMIT 8
+  `;
+  const activity = history as unknown as {
+    action: string;
+    performed_by_email: string | null;
+    notes: string | null;
+    created_at: string;
+  }[];
   const status = (p.status as string) ?? "pending";
   const shortId = p.short_id as string | null;
   return (
@@ -92,6 +105,25 @@ export default async function PromiseDetailPage({
           bankNotes: (p.bank_notes as string | null) ?? null,
         }}
       />
+      <section className="rounded-lg border border-slate-200 bg-white p-4">
+        <h2 className="text-sm font-semibold text-slate-900">Agreement activity</h2>
+        {activity.length === 0 ? (
+          <p className="mt-2 text-sm text-slate-500">No activity yet.</p>
+        ) : (
+          <ul className="mt-3 space-y-2">
+            {activity.map((h, idx) => (
+              <li key={`${h.action}-${h.created_at}-${idx}`} className="rounded-md border border-slate-200 p-2">
+                <p className="text-sm text-slate-800">
+                  <span className="font-medium">{h.action.replace(/_/g, " ")}</span>
+                  {h.performed_by_email ? ` by ${h.performed_by_email}` : ""}
+                </p>
+                {h.notes && <p className="text-sm text-slate-600 mt-1 whitespace-pre-wrap">{h.notes}</p>}
+                <p className="text-xs text-slate-500 mt-1">{new Date(h.created_at).toLocaleString()}</p>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
     </div>
   );
 }
