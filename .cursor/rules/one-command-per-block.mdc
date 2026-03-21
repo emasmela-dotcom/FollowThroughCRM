@@ -1,0 +1,10 @@
+---
+description: Put at most one runnable command per fenced code block
+alwaysApply: true
+---
+
+# One command per block
+
+- In every fenced code block that contains shell/terminal commands, include **at most one** command to run.
+- If multiple steps are needed, use **separate** fenced blocks (one command each), in order.
+- Do not combine `cd ...` and `npm ...` in the same block unless the user explicitly asked for a one-liner script.
