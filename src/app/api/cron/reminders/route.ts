@@ -17,6 +17,7 @@ type OverdueRow = {
   direction: string;
   due_at: string;
   person_name: string | null;
+  short_id: string | null;
 };
 
 type UnconfirmedRow = {
@@ -25,6 +26,8 @@ type UnconfirmedRow = {
   title: string;
   created_at: string;
   person_name: string | null;
+  short_id: string | null;
+  version: number | null;
 };
 
 export async function GET(req: Request) {
@@ -39,7 +42,7 @@ export async function GET(req: Request) {
   //
   // Pending promises that are due/overdue AND have NOT had an "overdue" reminder sent TODAY
   const overdueRows = (await sql`
-    SELECT p.id AS promise_id, p.user_id, p.title, p.direction, p.due_at, per.name AS person_name
+    SELECT p.id AS promise_id, p.user_id, p.title, p.direction, p.due_at, p.short_id, per.name AS person_name
     FROM promises p
     LEFT JOIN people per ON per.id = p.person_id
     WHERE p.status = 'pending'
@@ -67,6 +70,7 @@ export async function GET(req: Request) {
   }
 
   let sent = 0;
+  const baseUrl = process.env.NEXTAUTH_URL?.replace(/\/$/, "") || "https://creatorflow365.com";
 
   // Group overdue rows by user and send one email per user (digest)
   const overdueByUser = new Map<string, OverdueRow[]>();
@@ -87,12 +91,15 @@ export async function GET(req: Request) {
         direction: string;
         due_at: string;
         person_name: string | null;
+        short_id: string | null;
       }[]
     ).map(
       (p) =>
         `- ${p.title}${
           p.person_name ? ` (${p.person_name})` : ""
-        } — due ${String(p.due_at).slice(0, 10)}`
+        } — due ${String(p.due_at).slice(0, 10)}${
+          p.short_id ? `\n  follow up link: ${baseUrl}/agreement/${p.short_id}` : ""
+        }`
     );
     const body = `You have ${
       promises.length
@@ -128,7 +135,7 @@ export async function GET(req: Request) {
   // Pending promises that have not been agreed to within 3+ days of creation,
   // and have NOT had an "unconfirmed" reminder sent TODAY.
   const unconfirmedRowsRaw = await sql`
-    SELECT p.id AS promise_id, p.user_id, p.title, p.created_at, per.name AS person_name
+    SELECT p.id AS promise_id, p.user_id, p.title, p.created_at, p.short_id, p.version, per.name AS person_name
     FROM promises p
     LEFT JOIN people per ON per.id = p.person_id
     WHERE p.status = 'pending'
@@ -171,10 +178,14 @@ export async function GET(req: Request) {
         title: string;
         created_at: string;
         person_name: string | null;
+        short_id: string | null;
+        version: number | null;
       }[]
     ).map((p) => {
       const createdDate = String(p.created_at).slice(0, 10);
-      return `- ${p.title}${p.person_name ? ` (${p.person_name})` : ""} — sent ${createdDate}, still unconfirmed`;
+      return `- ${p.title}${p.person_name ? ` (${p.person_name})` : ""} — sent ${createdDate}, still unconfirmed${
+        p.version ? ` (v${p.version})` : ""
+      }${p.short_id ? `\n  follow up link: ${baseUrl}/agreement/${p.short_id}` : ""}`;
     });
 
     const body = `You have ${
