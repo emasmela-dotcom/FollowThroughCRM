@@ -32,6 +32,10 @@ export default function InstructionsPage() {
         <li>
           <strong>Mark complete.</strong> When the work is done, open the request again and click <strong>Mark complete</strong>. You can also <strong>Cancel agreement</strong> if it’s no longer needed.
         </li>
+        <li>
+          <strong>Get paid.</strong> Under <strong>Get paid</strong>, add your Stripe, PayPal, Venmo, or other instructions. When the agreement is complete, the other party sees those options on the public link. When money hits your account,{" "}
+          <strong>Mark payment received</strong> on the request for your own records (Follow Thru doesn’t process payments).
+        </li>
       </ol>
 
       <p className="text-slate-500 text-xs">

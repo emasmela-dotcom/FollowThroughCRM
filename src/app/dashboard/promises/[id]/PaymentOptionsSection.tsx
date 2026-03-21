@@ -259,10 +259,9 @@ export default function PaymentOptionsSection({ value, onChange }: Props) {
   return (
     <section className="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm space-y-4">
       <div>
-        <h2 className="text-lg font-semibold text-slate-900">Payment options</h2>
-        <p className="text-sm text-slate-500 mt-1">
-          Add one or more ways they can pay you. Only the methods you fill in
-          will show on the public agreement page.
+        <h2 className="text-lg font-semibold text-slate-900">Get paid</h2>
+        <p className="text-sm text-slate-600 mt-1">
+          Add Stripe, PayPal, Venmo, Zelle, etc. Only fields you fill show on the public agreement. When the work is complete, they pay you through your links—Follow Thru doesn’t process or hold funds.
         </p>
       </div>
 

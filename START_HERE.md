@@ -11,6 +11,14 @@ ALTER TABLE promises ADD COLUMN IF NOT EXISTS version INTEGER NOT NULL DEFAULT 1
 
 Same SQL lives in: `scripts/migrations/002-message-to-other-version.sql`.
 
+If you don’t have **`payment_received_at`** yet (creator marks when they received payment):
+
+```sql
+ALTER TABLE promises ADD COLUMN IF NOT EXISTS payment_received_at TIMESTAMPTZ;
+```
+
+See `scripts/migrations/003-payment-received.sql`.
+
 After that, `message_to_other` (form → public agreement + send-link email) and `version` (increments when someone requests a change) work end-to-end.
 
 ---

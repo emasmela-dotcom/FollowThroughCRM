@@ -8,6 +8,8 @@ type Agreement = {
   id: string;
   short_id: string | null;
   title: string;
+  /** Creator perspective: they owe you = client pays you */
+  direction?: string | null;
   status: string;
   due_at: string | null;
   compensation: string | null;
@@ -40,6 +42,17 @@ function formatCountdown(ms: number): string {
   if (minutes || hours || days) parts.push(`${minutes}m`);
   parts.push(`${seconds}s`);
   return parts.join(" ");
+}
+
+function hasPaymentMethods(a: Agreement): boolean {
+  return !!(
+    a.stripe_link?.trim() ||
+    a.paypal_link?.trim() ||
+    a.cash_app_tag?.trim() ||
+    a.venmo_user?.trim() ||
+    a.zelle_contact?.trim() ||
+    a.bank_notes?.trim()
+  );
 }
 
 function LiveCountdown({
@@ -278,7 +291,59 @@ export default function PublicAgreementPage() {
         )}
 
         {isDone && (
-          <div className="p-6 border-t border-slate-200">
+          <div className="p-6 border-t border-slate-200 space-y-4">
+            {agreement.direction === "they_owe" && hasPaymentMethods(agreement) && (
+              <div className="rounded-lg border border-emerald-200 bg-emerald-50/90 p-4">
+                <p className="text-sm font-semibold text-emerald-950">Pay for this work</p>
+                <p className="text-sm text-emerald-900/90 mt-1">
+                  Use the method you agreed on. Payment goes to the agreement creator—we don’t process cards here.
+                </p>
+                <ul className="mt-3 space-y-2 text-sm">
+                  {agreement.stripe_link?.trim() && (
+                    <li>
+                      <a
+                        href={agreement.stripe_link.trim()}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-medium text-emerald-900 underline"
+                      >
+                        Pay with Stripe →
+                      </a>
+                    </li>
+                  )}
+                  {agreement.paypal_link?.trim() && (
+                    <li>
+                      <a
+                        href={agreement.paypal_link.trim()}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-medium text-emerald-900 underline"
+                      >
+                        Pay with PayPal →
+                      </a>
+                    </li>
+                  )}
+                  {agreement.cash_app_tag?.trim() && (
+                    <li className="text-emerald-900">
+                      Cash App: <span className="font-mono">{agreement.cash_app_tag.trim()}</span>
+                    </li>
+                  )}
+                  {agreement.venmo_user?.trim() && (
+                    <li className="text-emerald-900">
+                      Venmo: <span className="font-mono">{agreement.venmo_user.trim()}</span>
+                    </li>
+                  )}
+                  {agreement.zelle_contact?.trim() && (
+                    <li className="text-emerald-900">
+                      Zelle: <span className="font-mono">{agreement.zelle_contact.trim()}</span>
+                    </li>
+                  )}
+                  {agreement.bank_notes?.trim() && (
+                    <li className="text-emerald-900 whitespace-pre-wrap">Bank / other: {agreement.bank_notes.trim()}</li>
+                  )}
+                </ul>
+              </div>
+            )}
             <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 text-center">
               <p className="font-medium text-slate-800 mb-2">Create your own agreement in 30 seconds.</p>
               <Link href="/login" className="inline-block rounded-lg bg-slate-800 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700">

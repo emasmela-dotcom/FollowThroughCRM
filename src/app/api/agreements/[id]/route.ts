@@ -41,6 +41,7 @@ export async function GET(request: NextRequest, { params }: Params) {
           id: row.id,
           short_id: row.short_id,
           title: row.title,
+          direction: row.direction,
           status: row.status,
           due_at: row.due_at,
           compensation: row.compensation,

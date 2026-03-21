@@ -10,6 +10,7 @@ import { ShareWin } from "./ShareWin";
 import { AgreementCountdown } from "@/components/agreements/AgreementCountdown";
 import { StatusBadge } from "@/components/agreements/StatusBadge";
 import PaymentOptionsSectionWrapper from "./PaymentOptionsSectionWrapper";
+import { MarkPaidButton } from "./MarkPaidButton";
 
 function formatActivityAction(action: string): string {
   if (action === "request_change") return "Requested changes";
@@ -31,7 +32,7 @@ export default async function PromiseDetailPage({
   const id = rawId.split("?")[0];
   const [p] = await sql`
     SELECT p.id, p.title, p.direction, p.status, p.due_at, p.notes, p.request_changes, p.version, p.message_to_other, p.person_id, p.created_at,
-           p.short_id, p.compensation, p.agreed_at, p.completed_at,
+           p.short_id, p.compensation, p.agreed_at, p.completed_at, p.payment_received_at,
            p.stripe_link, p.paypal_link, p.cash_app_tag, p.venmo_user, p.zelle_contact, p.bank_notes,
            per.name AS person_name, per.email AS person_email
     FROM promises p
@@ -123,6 +124,12 @@ export default async function PromiseDetailPage({
           bankNotes: (p.bank_notes as string | null) ?? null,
         }}
       />
+      {status === "done" && (p.direction as string) === "they_owe" && (
+        <MarkPaidButton
+          promiseId={p.id as string}
+          paidAt={(p.payment_received_at as string | null) ?? null}
+        />
+      )}
       <section className="rounded-lg border border-slate-200 bg-white p-4">
         <h2 className="text-sm font-semibold text-slate-900">Agreement activity</h2>
         {activity.length === 0 ? (

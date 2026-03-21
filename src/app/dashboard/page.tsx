@@ -45,6 +45,11 @@ export default async function DashboardPage() {
     SELECT COUNT(*)::int AS c FROM people WHERE user_id = ${uid}
   `;
   const peopleCount = (peopleCountRow as { c: number })?.c ?? 0;
+  const [unpaidDoneRow] = await sql`
+    SELECT COUNT(*)::int AS c FROM promises
+    WHERE user_id = ${uid} AND status = 'done' AND direction = 'they_owe' AND payment_received_at IS NULL
+  `;
+  const unpaidDoneCount = (unpaidDoneRow as { c: number })?.c ?? 0;
   const today = new Date().toISOString().slice(0, 10);
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
@@ -89,6 +94,13 @@ export default async function DashboardPage() {
           <span><strong className="text-slate-900">{dueTomorrow.length}</strong> due soon</span>
         </div>
       </div>
+
+      {unpaidDoneCount > 0 && (
+        <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-950">
+          <strong>{unpaidDoneCount}</strong> completed “they owe you” {unpaidDoneCount === 1 ? "item" : "items"} with no payment recorded yet.{" "}
+          <span className="text-emerald-900/90">Open each request → add payment links if needed → mark payment received when you’re paid.</span>
+        </div>
+      )}
 
       {(awaitingCount > 0 || dueTomorrow.length > 0) && (
         <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">

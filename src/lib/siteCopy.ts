@@ -8,4 +8,7 @@ export const SITE = {
   description:
     "Track what you're waiting on and who you're waiting on it from. Share agreement links, confirm terms, and follow through—without a sales pipeline.",
   audienceLine: "Built for freelancers, contractors, and anyone who needs a clear yes.",
+  /** Product positioning: utility + money */
+  valueProp:
+    "Run your agreements and follow-ups in one place—then collect payment with your own links (Stripe, PayPal, and more) when the work is done.",
 } as const;

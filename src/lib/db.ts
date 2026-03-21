@@ -98,6 +98,9 @@ export async function initDb() {
     ALTER TABLE promises ADD COLUMN IF NOT EXISTS version INTEGER NOT NULL DEFAULT 1;
   `;
   await sql`
+    ALTER TABLE promises ADD COLUMN IF NOT EXISTS payment_received_at TIMESTAMPTZ;
+  `;
+  await sql`
     CREATE TABLE IF NOT EXISTS agreement_documents (
       id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
       promise_id UUID NOT NULL REFERENCES promises(id) ON DELETE CASCADE,

@@ -28,6 +28,7 @@ export async function PATCH(
     zelle_contact,
     bank_notes,
     message_to_other,
+    payment_received,
   } = body;
   const isRevisionEdit =
     title !== undefined ||
@@ -84,6 +85,19 @@ export async function PATCH(
     const v = normalizeOptionalText(message_to_other);
     await sql`UPDATE promises SET message_to_other = ${v}, updated_at = NOW() WHERE id = ${id} AND user_id = ${uid}`;
   }
+  if (payment_received !== undefined) {
+    if (payment_received === true) {
+      await sql`
+        UPDATE promises
+        SET payment_received_at = NOW(), updated_at = NOW()
+        WHERE id = ${id} AND user_id = ${uid}
+      `;
+    } else {
+      await sql`
+        UPDATE promises SET payment_received_at = NULL, updated_at = NOW() WHERE id = ${id} AND user_id = ${uid}
+      `;
+    }
+  }
   let revisedVersion: number | null = null;
   if (isRevisionEdit) {
     // Any creator edit creates a new revision and clears prior change-request text.
@@ -109,6 +123,7 @@ export async function PATCH(
   }
   const [row] = await sql`
     SELECT p.id, p.title, p.direction, p.status, p.due_at, p.notes, p.request_changes, p.version, p.message_to_other, p.person_id, p.created_at,
+           p.completed_at, p.payment_received_at,
            p.stripe_link, p.paypal_link, p.cash_app_tag, p.venmo_user, p.zelle_contact, p.bank_notes,
            per.name AS person_name, per.email AS person_email
     FROM promises p
