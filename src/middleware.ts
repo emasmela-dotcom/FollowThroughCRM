@@ -3,7 +3,12 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export async function middleware(req: NextRequest) {
-  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+  let token = null;
+  try {
+    token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+  } catch (e) {
+    console.error("[middleware] getToken failed", e);
+  }
   const path = req.nextUrl.pathname;
   if (path.startsWith("/dashboard") && !token) {
     const login = new URL("/login", req.url);

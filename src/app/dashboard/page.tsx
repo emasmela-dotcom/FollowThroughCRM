@@ -1,12 +1,11 @@
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { getSession } from "@/lib/auth";
 import { sql } from "@/lib/db";
 import { WaitingOnDashboard } from "./WaitingOnDashboard";
 import Link from "next/link";
 import { OnboardingChecklist } from "@/components/onboarding/OnboardingChecklist";
 
 export default async function DashboardPage() {
-  const session = await getServerSession(authOptions);
+  const session = await getSession();
   if (!session?.user?.id) return null;
   const uid = session.user.id;
   const promises = await sql`

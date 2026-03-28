@@ -1,11 +1,10 @@
-import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import { authOptions } from "@/lib/auth";
+import { getSession } from "@/lib/auth";
 import Link from "next/link";
 import { SITE } from "@/lib/siteCopy";
 
 export default async function Home() {
-  const session = await getServerSession(authOptions);
+  const session = await getSession();
   if (session) redirect("/dashboard");
 
   return (

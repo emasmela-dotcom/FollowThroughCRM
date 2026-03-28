@@ -1,6 +1,5 @@
-import { getServerSession } from "next-auth";
+import { getSession } from "@/lib/auth";
 import { NextResponse } from "next/server";
-import { authOptions } from "@/lib/auth";
 import { sql } from "@/lib/db";
 import { normalizeOptionalText } from "@/lib/normalizeOptionalText";
 
@@ -8,7 +7,7 @@ export async function PATCH(
   req: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const session = await getServerSession(authOptions);
+  const session = await getSession();
   if (!session?.user?.id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const { id } = await params;
   const uid = session.user.id;
@@ -138,7 +137,7 @@ export async function DELETE(
   _req: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const session = await getServerSession(authOptions);
+  const session = await getSession();
   if (!session?.user?.id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const { id } = await params;
   const r = await sql`DELETE FROM promises WHERE id = ${id} AND user_id = ${session.user.id} RETURNING id`;

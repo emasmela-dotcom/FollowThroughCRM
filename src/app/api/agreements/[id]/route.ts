@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
 import { sql } from "@/lib/db";
-import { authOptions } from "@/lib/auth";
+import { getSession } from "@/lib/auth";
 
 type Params = { params: Promise<{ id: string }> };
 
@@ -9,7 +8,7 @@ type Params = { params: Promise<{ id: string }> };
 export async function GET(request: NextRequest, { params }: Params) {
   try {
     const { id } = await params;
-    const session = await getServerSession(authOptions);
+    const session = await getSession();
 
     const rows = await sql`
       SELECT p.id, p.short_id, p.title, p.direction, p.status, p.due_at, p.notes,

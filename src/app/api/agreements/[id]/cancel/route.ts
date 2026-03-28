@@ -1,14 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
 import { sql } from "@/lib/db";
-import { authOptions } from "@/lib/auth";
+import { getSession } from "@/lib/auth";
 
 type Params = { params: Promise<{ id: string }> };
 
 // POST: Creator cancels agreement
 export async function POST(request: NextRequest, { params }: Params) {
   try {
-    const session = await getServerSession(authOptions);
+    const session = await getSession();
     if (!session?.user?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }

@@ -1,5 +1,4 @@
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { getSession } from "@/lib/auth";
 import { sql } from "@/lib/db";
 import Link from "next/link";
 import { PeopleList } from "./PeopleList";
@@ -20,7 +19,7 @@ export type PersonRow = {
 };
 
 export default async function PeoplePage() {
-  const session = await getServerSession(authOptions);
+  const session = await getSession();
   if (!session?.user?.id) return null;
   const people = await sql`
     SELECT id, name, email, phone, address, company, job_title, preferred_contact, website, category, notes, created_at FROM people

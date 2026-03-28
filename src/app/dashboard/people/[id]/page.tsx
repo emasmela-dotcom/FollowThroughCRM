@@ -1,5 +1,4 @@
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { getSession } from "@/lib/auth";
 import { sql } from "@/lib/db";
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -10,7 +9,7 @@ export default async function PersonEditPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const session = await getServerSession(authOptions);
+  const session = await getSession();
   if (!session?.user?.id) return null;
   const { id } = await params;
   const [row] = await sql`
