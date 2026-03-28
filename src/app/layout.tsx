@@ -7,6 +7,10 @@ import { SITE } from "@/lib/siteCopy";
 export const metadata: Metadata = {
   title: SITE.brandName,
   description: SITE.description,
+  icons: {
+    icon: "/favicon.svg",
+    shortcut: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({
