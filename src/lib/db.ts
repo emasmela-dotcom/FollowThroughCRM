@@ -100,6 +100,35 @@ export async function initDb() {
   await sql`
     ALTER TABLE promises ADD COLUMN IF NOT EXISTS payment_received_at TIMESTAMPTZ;
   `;
+  // Agreement / public link columns (see scripts/migrations/001-agreement-fields.sql)
+  await sql`ALTER TABLE promises ADD COLUMN IF NOT EXISTS compensation TEXT`;
+  await sql`ALTER TABLE promises ADD COLUMN IF NOT EXISTS agreed_at TIMESTAMPTZ`;
+  await sql`ALTER TABLE promises ADD COLUMN IF NOT EXISTS completed_at TIMESTAMPTZ`;
+  await sql`ALTER TABLE promises ADD COLUMN IF NOT EXISTS short_id VARCHAR(10)`;
+  await sql`ALTER TABLE promises ADD COLUMN IF NOT EXISTS request_changes TEXT`;
+  await sql`ALTER TABLE promises ADD COLUMN IF NOT EXISTS last_reminder_sent TIMESTAMPTZ`;
+  await sql`ALTER TABLE promises ADD COLUMN IF NOT EXISTS other_party_email VARCHAR(255)`;
+  await sql`ALTER TABLE promises ADD COLUMN IF NOT EXISTS other_party_name VARCHAR(255)`;
+  // Payment link fields (dashboard / agreement page)
+  await sql`ALTER TABLE promises ADD COLUMN IF NOT EXISTS stripe_link TEXT`;
+  await sql`ALTER TABLE promises ADD COLUMN IF NOT EXISTS paypal_link TEXT`;
+  await sql`ALTER TABLE promises ADD COLUMN IF NOT EXISTS cash_app_tag TEXT`;
+  await sql`ALTER TABLE promises ADD COLUMN IF NOT EXISTS venmo_user TEXT`;
+  await sql`ALTER TABLE promises ADD COLUMN IF NOT EXISTS zelle_contact TEXT`;
+  await sql`ALTER TABLE promises ADD COLUMN IF NOT EXISTS bank_notes TEXT`;
+  await sql`CREATE UNIQUE INDEX IF NOT EXISTS idx_promises_short_id ON promises (short_id)`;
+  await sql`
+    CREATE TABLE IF NOT EXISTS agreement_history (
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      promise_id UUID NOT NULL REFERENCES promises(id) ON DELETE CASCADE,
+      action VARCHAR(50) NOT NULL,
+      performed_by UUID REFERENCES users(id),
+      performed_by_email VARCHAR(255),
+      notes TEXT,
+      created_at TIMESTAMPTZ DEFAULT NOW()
+    )
+  `;
+  await sql`CREATE INDEX IF NOT EXISTS idx_agreement_history_promise ON agreement_history (promise_id)`;
   await sql`
     CREATE TABLE IF NOT EXISTS agreement_documents (
       id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
