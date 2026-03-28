@@ -1,6 +1,5 @@
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { sql } from "./db";
 import bcrypt from "bcryptjs";
 
 export const authOptions: NextAuthOptions = {
@@ -13,14 +12,20 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null;
-        const rows = await sql`
+        try {
+          const { sql } = await import("./db");
+          const rows = await sql`
           SELECT id, email, password_hash FROM users WHERE email = ${credentials.email} LIMIT 1
         `;
-        const user = rows[0];
-        if (!user) return null;
-        const ok = await bcrypt.compare(credentials.password, user.password_hash as string);
-        if (!ok) return null;
-        return { id: user.id, email: user.email };
+          const user = rows[0];
+          if (!user) return null;
+          const ok = await bcrypt.compare(credentials.password, user.password_hash as string);
+          if (!ok) return null;
+          return { id: String(user.id), email: user.email as string };
+        } catch (e) {
+          console.error("[auth] authorize failed", e);
+          return null;
+        }
       },
     }),
   ],
