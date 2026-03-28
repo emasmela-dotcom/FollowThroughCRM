@@ -1,0 +1,42 @@
+---
+description: Commit and push after significant code/build changes once verified
+alwaysApply: true
+---
+
+# Commit and push after a tested, significant change
+
+When you finish a **significant** change to **build or application code** (or project config that affects the product or deploy), and it is **tested good**, **commit and push** in the same session—do not stop after only local edits.
+
+## Significant (examples)
+
+- New or changed features, API routes, auth, data layer, or UI behavior
+- Bug fixes that change runtime behavior
+- Dependency or build config changes (`package.json`, `next.config`, CI)
+- Multi-file refactors that ship together
+- New migrations or schema changes meant for production
+
+Not significant by itself: answering a question with no code change; a one-line comment-only edit unless the user asked to ship it.
+
+## Tested good (do at least one before commit)
+
+- Run **`npm run build`** (or the project’s build command) when the change can affect compile/bundle, and it **succeeds**
+- Run **`npm test`** (or the repo’s test script) when tests exist and the change touches covered code, and they **pass**
+- If the user **explicitly confirmed** behavior in the browser or otherwise, treat that as tested for that change
+
+If build/tests **fail**, fix first, then commit and push. If you cannot run them here, say what the user should run and still commit only when they confirm green—or when they explicitly asked to commit anyway.
+
+## Git steps (same response)
+
+1. `git status` — stage every file that belongs to the change
+2. **Commit** with a short, accurate message (what changed and why)
+3. **Push** to the **current branch** (e.g. `git push origin main` or the checked-out branch)
+
+## Do not commit or push when
+
+- The user said not to (e.g. “don’t commit yet”)
+- There is **nothing** meaningful to commit
+- The change is **only** exploratory and the user did not ask to save it
+
+## Conflict with other rules
+
+If another rule says “do not commit unless the user asks,” this rule **wins for this repo** when the conditions above are met (significant + tested good), because the user chose this workflow for FollowThroughCRM.
