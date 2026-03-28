@@ -20,8 +20,9 @@ export async function POST(req: Request) {
     );
   }
 
-  const tokenHash = createHash("sha256").update(token).digest("hex");
-  const rows = await sql`
+  try {
+    const tokenHash = createHash("sha256").update(token).digest("hex");
+    const rows = await sql`
     SELECT id, user_id FROM password_reset_tokens
     WHERE token_hash = ${tokenHash}
       AND used_at IS NULL
@@ -29,20 +30,27 @@ export async function POST(req: Request) {
     LIMIT 1
   `;
 
-  if (!rows.length) {
+    if (!rows.length) {
+      return NextResponse.json(
+        { error: "This reset link is invalid or has expired. Request a new one from the sign-in page." },
+        { status: 400 }
+      );
+    }
+
+    const row = rows[0] as { id: string; user_id: string };
+    const passwordHash = await bcrypt.hash(password, 10);
+
+    await sql.begin(async (s) => {
+      await s`UPDATE users SET password_hash = ${passwordHash} WHERE id = ${row.user_id}`;
+      await s`UPDATE password_reset_tokens SET used_at = NOW() WHERE user_id = ${row.user_id} AND used_at IS NULL`;
+    });
+
+    return NextResponse.json({ ok: true });
+  } catch (e) {
+    console.error("[reset-password]", e);
     return NextResponse.json(
-      { error: "This reset link is invalid or has expired. Request a new one from the sign-in page." },
-      { status: 400 }
+      { error: "Could not update password. The database may be missing the password_reset_tokens table." },
+      { status: 500 }
     );
   }
-
-  const row = rows[0] as { id: string; user_id: string };
-  const passwordHash = await bcrypt.hash(password, 10);
-
-  await sql.begin(async (s) => {
-    await s`UPDATE users SET password_hash = ${passwordHash} WHERE id = ${row.user_id}`;
-    await s`UPDATE password_reset_tokens SET used_at = NOW() WHERE user_id = ${row.user_id} AND used_at IS NULL`;
-  });
-
-  return NextResponse.json({ ok: true });
 }

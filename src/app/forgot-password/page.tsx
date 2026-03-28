@@ -22,7 +22,14 @@ export default function ForgotPasswordPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
       });
-      const data = await res.json();
+      const text = await res.text();
+      let data: { error?: string; message?: string } = {};
+      try {
+        data = text ? (JSON.parse(text) as typeof data) : {};
+      } catch {
+        setError(`Server returned an invalid response (${res.status}). Try again or check Vercel logs.`);
+        return;
+      }
       if (!res.ok) {
         setError(typeof data.error === "string" ? data.error : "Something went wrong.");
         return;

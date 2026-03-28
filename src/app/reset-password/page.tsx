@@ -38,7 +38,14 @@ function ResetForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token, password }),
       });
-      const data = await res.json();
+      const text = await res.text();
+      let data: { error?: string } = {};
+      try {
+        data = text ? (JSON.parse(text) as typeof data) : {};
+      } catch {
+        setError(`Server returned an invalid response (${res.status}). Try again.`);
+        return;
+      }
       if (!res.ok) {
         setError(typeof data.error === "string" ? data.error : "Reset failed.");
         return;
