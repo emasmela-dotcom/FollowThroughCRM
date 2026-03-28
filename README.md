@@ -43,6 +43,17 @@ Get the app into git and running with **no usage and no cost** (no Resend, no re
 
 Cron still runs on Vercel but sends no emails when `RESEND_API_KEY` is unset.
 
+### Forgot password
+
+- **With email:** Set `RESEND_API_KEY` in Vercel (same as reminder emails). Users use **Forgot password?** on the sign-in page; they receive a one-hour link to `/reset-password`.
+- **Without email:** Reset emails are not sent. Use **Forgot password?** → expand **Admin / self-hosted reset**, or run locally with the same `DATABASE_URL` as production:
+
+```bash
+npm run reset-password -- your@email.com YourNewPassword8+
+```
+
+After deploying this feature, run **`npm run db:push`** once so the `password_reset_tokens` table exists (or run `scripts/migrations/004-password-reset-tokens.sql` in Neon).
+
 ### Tests
 
 ```bash

@@ -15,6 +15,7 @@ function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") ?? "/dashboard";
+  const passwordResetOk = searchParams.get("reset") === "1";
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -39,6 +40,11 @@ function LoginForm() {
         </p>
         <h1 className="text-xl font-semibold text-slate-900 mb-1">{SITE.brandName}</h1>
         <p className="text-slate-500 text-sm mb-6">Sign in to track what you’re waiting on—and who you’re waiting on it from.</p>
+        {passwordResetOk && (
+          <p className="text-sm text-green-700 bg-green-50 border border-green-200 rounded-lg px-3 py-2 mb-4">
+            Your password was updated. Sign in with your new password.
+          </p>
+        )}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1">Email</label>
@@ -52,7 +58,12 @@ function LoginForm() {
             />
           </div>
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-1">Password</label>
+            <div className="flex items-center justify-between gap-2 mb-1">
+              <label htmlFor="password" className="block text-sm font-medium text-slate-700">Password</label>
+              <Link href="/forgot-password" className="text-sm text-slate-600 hover:text-slate-900 underline underline-offset-2">
+                Forgot password?
+              </Link>
+            </div>
             <input
               id="password"
               type="password"

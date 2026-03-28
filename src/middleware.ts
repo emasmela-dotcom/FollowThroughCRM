@@ -10,10 +10,15 @@ export async function middleware(req: NextRequest) {
     login.searchParams.set("callbackUrl", path);
     return NextResponse.redirect(login);
   }
-  if ((path === "/login" || path === "/signup") && token) {
+  if (
+    (path === "/login" || path === "/signup" || path === "/forgot-password" || path === "/reset-password") &&
+    token
+  ) {
     return NextResponse.redirect(new URL("/dashboard", req.url));
   }
   return NextResponse.next();
 }
 
-export const config = { matcher: ["/dashboard/:path*", "/login", "/signup"] };
+export const config = {
+  matcher: ["/dashboard/:path*", "/login", "/signup", "/forgot-password", "/reset-password"],
+};
