@@ -1,8 +1,14 @@
 "use client";
 
 import { Analytics as VercelAnalytics } from "@vercel/analytics/react";
+import { GoogleAnalytics } from "./GoogleAnalytics";
 
-/** Web vitals + page views when deployed on Vercel. No-op if not on Vercel. */
+/** Vercel Analytics + optional GA4 (NEXT_PUBLIC_GA_MEASUREMENT_ID). */
 export function Analytics() {
-  return <VercelAnalytics />;
+  return (
+    <>
+      <VercelAnalytics />
+      <GoogleAnalytics />
+    </>
+  );
 }
