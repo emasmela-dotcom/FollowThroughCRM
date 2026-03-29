@@ -24,6 +24,11 @@ export async function GET() {
       WHERE table_schema = 'public' AND table_name = 'agreement_history'
       LIMIT 1
     `;
+    const [payCol] = await sql`
+      SELECT 1 AS n FROM information_schema.columns
+      WHERE table_schema = 'public' AND table_name = 'promises' AND column_name = 'payment_received_at'
+      LIMIT 1
+    `;
     return NextResponse.json({
       ok: true,
       db: "up",
@@ -31,6 +36,7 @@ export async function GET() {
       schema: {
         promises_has_request_changes: Boolean(reqCol),
         has_agreement_history: Boolean(histTbl),
+        promises_has_payment_received_at: Boolean(payCol),
       },
       time: new Date().toISOString(),
     });

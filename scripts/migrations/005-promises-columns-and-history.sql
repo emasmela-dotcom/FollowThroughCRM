@@ -16,6 +16,11 @@ ALTER TABLE promises ADD COLUMN IF NOT EXISTS venmo_user TEXT;
 ALTER TABLE promises ADD COLUMN IF NOT EXISTS zelle_contact TEXT;
 ALTER TABLE promises ADD COLUMN IF NOT EXISTS bank_notes TEXT;
 
+-- Bookkeeping + copy (dashboard + API; see 002 / initDb)
+ALTER TABLE promises ADD COLUMN IF NOT EXISTS payment_received_at TIMESTAMPTZ;
+ALTER TABLE promises ADD COLUMN IF NOT EXISTS message_to_other TEXT;
+ALTER TABLE promises ADD COLUMN IF NOT EXISTS version INTEGER NOT NULL DEFAULT 1;
+
 CREATE UNIQUE INDEX IF NOT EXISTS idx_promises_short_id ON promises (short_id);
 
 CREATE TABLE IF NOT EXISTS agreement_history (
