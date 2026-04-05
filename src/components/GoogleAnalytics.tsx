@@ -4,7 +4,12 @@ import Script from "next/script";
 import { Suspense, useEffect } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 
-const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
+/** Production stream for followthrucrm.com — override anytime with NEXT_PUBLIC_GA_MEASUREMENT_ID. */
+const DEFAULT_GA_ON_VERCEL_PRODUCTION =
+  process.env.VERCEL_ENV === "production" ? "G-ZPJ5XTDCPN" : undefined;
+
+const GA_MEASUREMENT_ID =
+  process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || DEFAULT_GA_ON_VERCEL_PRODUCTION;
 
 declare global {
   interface Window {
@@ -28,7 +33,7 @@ function GaPageViews() {
   return null;
 }
 
-/** GA4 via gtag. Renders nothing when NEXT_PUBLIC_GA_MEASUREMENT_ID is unset. */
+/** GA4 via gtag. On Vercel production, uses G-ZPJ5XTDCPN unless NEXT_PUBLIC_GA_MEASUREMENT_ID is set. */
 export function GoogleAnalytics() {
   if (!GA_MEASUREMENT_ID) return null;
 
