@@ -1,14 +1,17 @@
 /** Single source of truth for public-facing product copy. */
 
-/** Canonical positioning — used in meta, Open Graph / Twitter, and homepage hero. */
+/** Canonical positioning — meta, Open Graph / Twitter, and first full paragraph on the homepage. */
 export const POSITIONING_SENTENCE =
   "Follow Thru CRM is a lightweight tool for freelancers and contractors to turn verbal or informal agreements into a single shareable link, track status and due dates, and attach their own payment methods (e.g. Stripe Payment Links)—without a sales pipeline." as const;
 
+/** First paragraph under the homepage hero headline (scannable; rest in POSITIONING_SENTENCE + meta). */
+export const POSITIONING_HERO_LEAD =
+  "Follow Thru CRM is a lightweight tool for freelancers and contractors to turn verbal or informal agreements into a single shareable link, track status and due dates, and attach their own payment methods." as const;
+
 export const SITE = {
   brandName: "Follow Thru CRM",
-  /** Short hero line — embeds the same story as POSITIONING_SENTENCE for scannability above the fold. */
-  tagline:
-    "Lightweight tool for freelancers and contractors: one shareable link for informal agreements, status and due dates, your own payment methods (e.g. Stripe Payment Links)—no sales pipeline.",
+  /** Same as hero subhead — dashboard header, onboarding, footer where SITE.tagline is used. */
+  tagline: POSITIONING_HERO_LEAD,
   /** One-line SEO description — flows to <meta name="description"> */
   description: POSITIONING_SENTENCE,
   /** Open Graph / Twitter description */
@@ -46,8 +49,8 @@ export const HOMEPAGE = {
   hero: {
     eyebrow: "Agreement tracking without the enterprise bloat",
     headline: "Get the yes. Ship the work. Get paid.",
-    /** Shown under the headline in the dark hero; full canonical sentence is the first paragraph below the hero. */
-    subhead: SITE.tagline,
+    /** Shown under the headline in the dark hero (POSITIONING_HERO_LEAD). */
+    subhead: POSITIONING_HERO_LEAD,
   },
   trustStrip: [
     "Sign up in under a minute",
