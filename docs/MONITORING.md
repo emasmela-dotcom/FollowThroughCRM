@@ -12,7 +12,6 @@ Use `/api/health` for generic uptime pings. Use `/api/ready` before traffic cuto
 ## Vercel
 
 - **Analytics**: `@vercel/analytics` is wired in `src/components/Analytics.tsx` (included from root layout). Enable **Web Analytics** in the Vercel project dashboard for the project linked to this repo.
-- **Google Analytics 4**: `src/components/GoogleAnalytics.tsx` loads on **Vercel production** with stream `G-ZPJ5XTDCPN`, or uses `NEXT_PUBLIC_GA_MEASUREMENT_ID` when set (overrides the default). After deploy, open GA4 → **Reports** → **Realtime** while you visit the live site to confirm hits. Standard reports can lag 24–48 hours.
 - **Logs**: Vercel → Project → Logs (function + edge).
 
 ## Cron

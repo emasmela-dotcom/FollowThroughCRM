@@ -2,13 +2,13 @@ import { NextResponse } from "next/server";
 import { createHash, randomBytes } from "crypto";
 import { Resend } from "resend";
 import { sql } from "@/lib/db";
+import { getPublicSiteOrigin } from "@/lib/publicSiteUrl";
 
 function appOrigin(req: Request): string {
   const host = req.headers.get("x-forwarded-host");
   const proto = req.headers.get("x-forwarded-proto") || "https";
   if (host) return `${proto}://${host}`;
-  const base = process.env.NEXTAUTH_URL?.replace(/\/$/, "");
-  if (base) return base;
+  if (process.env.NEXTAUTH_URL?.trim()) return getPublicSiteOrigin();
   if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
   return new URL(req.url).origin;
 }

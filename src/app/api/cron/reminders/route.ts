@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { sql } from "@/lib/db";
+import { getPublicSiteOrigin } from "@/lib/publicSiteUrl";
 import { Resend } from "resend";
 
 // Vercel Cron calls this; protect with CRON_SECRET so only Vercel can trigger.
@@ -70,7 +71,7 @@ export async function GET(req: Request) {
   }
 
   let sent = 0;
-  const baseUrl = process.env.NEXTAUTH_URL?.replace(/\/$/, "") || "https://creatorflow365.com";
+  const baseUrl = getPublicSiteOrigin();
 
   // Group overdue rows by user and send one email per user (digest)
   const overdueByUser = new Map<string, OverdueRow[]>();
