@@ -1,15 +1,18 @@
 /** Single source of truth for public-facing product copy. */
 
+/** Canonical positioning — used in meta, Open Graph / Twitter, and homepage hero. */
+export const POSITIONING_SENTENCE =
+  "Follow Thru CRM is a lightweight tool for freelancers and contractors to turn verbal or informal agreements into a single shareable link, track status and due dates, and attach their own payment methods (e.g. Stripe Payment Links)—without a sales pipeline." as const;
+
 export const SITE = {
   brandName: "Follow Thru CRM",
-  /** Short line under the brand in headers */
-  tagline: "Turn conversations into confirmed agreements, then payment after completion.",
-  /** One-line SEO description */
-  description:
-    "Get the yes, ship the work, get paid. Lightweight CRM for agreements—shareable links, clear status, Stripe and PayPal links you control. Built for freelancers and contractors.",
-  /** Shorter line for Twitter / OG where space is tight */
-  socialDescription:
-    "Agreement tracking without enterprise bloat. One link, clear status, your payment links.",
+  /** Short line under the brand in headers (aligned with positioning; keep scannable in nav). */
+  tagline:
+    "One shareable link for informal agreements—track status, due dates, and your own payment methods. No sales pipeline.",
+  /** One-line SEO description — flows to <meta name="description"> */
+  description: POSITIONING_SENTENCE,
+  /** Open Graph / Twitter description */
+  socialDescription: POSITIONING_SENTENCE,
   audienceLine: "Built for freelancers, contractors, and anyone who needs a clear yes.",
   /** Product positioning: utility + money */
   valueProp:
@@ -43,8 +46,7 @@ export const HOMEPAGE = {
   hero: {
     eyebrow: "Agreement tracking without the enterprise bloat",
     headline: "Get the yes. Ship the work. Get paid.",
-    subhead:
-      "Follow Thru is the lightweight CRM for verbal and written agreements—one shareable link, clear status, and your own payment links when it is time to collect.",
+    subhead: POSITIONING_SENTENCE,
   },
   trustStrip: [
     "Sign up in under a minute",

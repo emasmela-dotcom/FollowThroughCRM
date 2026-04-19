@@ -126,7 +126,7 @@ export function HomeMarketing({ marketingCheckoutUrl }: { marketingCheckoutUrl: 
           <h1 className="mx-auto mt-4 max-w-4xl text-center text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
             {HOMEPAGE.hero.headline}
           </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-center text-lg leading-relaxed text-slate-300 sm:text-xl">
+          <p className="mx-auto mt-6 max-w-4xl text-center text-base leading-relaxed text-slate-300 sm:text-lg sm:leading-relaxed">
             {HOMEPAGE.hero.subhead}
           </p>
           <div className="mx-auto mt-10 max-w-3xl">
