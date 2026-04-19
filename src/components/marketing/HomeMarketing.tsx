@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { HOMEPAGE, SITE } from "@/lib/siteCopy";
+import { HOMEPAGE, POSITIONING_SENTENCE, SITE } from "@/lib/siteCopy";
 
 function FeatureIcon({ id }: { id: string }) {
   const common = "h-10 w-10 text-slate-700";
@@ -143,6 +143,14 @@ export function HomeMarketing({ marketingCheckoutUrl }: { marketingCheckoutUrl: 
               </p>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className="border-b border-slate-200/60 bg-white" aria-label="What Follow Thru CRM is">
+        <div className="mx-auto max-w-3xl px-4 py-10 sm:py-12">
+          <p className="text-center text-base font-medium leading-relaxed text-slate-800 sm:text-lg sm:leading-relaxed">
+            {POSITIONING_SENTENCE}
+          </p>
         </div>
       </section>
 

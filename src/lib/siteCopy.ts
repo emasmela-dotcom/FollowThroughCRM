@@ -6,9 +6,9 @@ export const POSITIONING_SENTENCE =
 
 export const SITE = {
   brandName: "Follow Thru CRM",
-  /** Short line under the brand in headers (aligned with positioning; keep scannable in nav). */
+  /** Short hero line — embeds the same story as POSITIONING_SENTENCE for scannability above the fold. */
   tagline:
-    "One shareable link for informal agreements—track status, due dates, and your own payment methods. No sales pipeline.",
+    "Lightweight tool for freelancers and contractors: one shareable link for informal agreements, status and due dates, your own payment methods (e.g. Stripe Payment Links)—no sales pipeline.",
   /** One-line SEO description — flows to <meta name="description"> */
   description: POSITIONING_SENTENCE,
   /** Open Graph / Twitter description */
@@ -46,7 +46,8 @@ export const HOMEPAGE = {
   hero: {
     eyebrow: "Agreement tracking without the enterprise bloat",
     headline: "Get the yes. Ship the work. Get paid.",
-    subhead: POSITIONING_SENTENCE,
+    /** Shown under the headline in the dark hero; full canonical sentence is the first paragraph below the hero. */
+    subhead: SITE.tagline,
   },
   trustStrip: [
     "Sign up in under a minute",
